@@ -1,5 +1,6 @@
 import React from 'react'
 import { styled } from 'styled-components';
+import Character from "../../assets/carrot-character.png"
 
 function Layout({children}) {
   return (
@@ -7,6 +8,7 @@ function Layout({children}) {
         <StContainer>
             {children}
         </StContainer>
+        <img src={Character} alt='당근이'/>
     </StLayout>
   )
 }
@@ -14,9 +16,17 @@ function Layout({children}) {
 export default Layout;
 
 const StLayout = styled.div`
+    position:relative;
     width:100%;
     background-color:#f9f5f4;
     margin:0;
+    &>img{
+        position:absolute;
+        bottom:0px;
+        z-index:0;
+        right:50px;
+        width:400px;
+    }
 `
 const StContainer = styled.div`
     width:480px;
