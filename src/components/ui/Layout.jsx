@@ -1,12 +1,16 @@
 import React from 'react'
 import { styled } from 'styled-components';
 import Character from "../../assets/carrot-character.png"
+import Header from './Header';
 
 function Layout({children}) {
   return (
     <StLayout>
         <StContainer>
-            {children}
+            <Header />
+            <Wrap>
+                {children}
+            </Wrap>
         </StContainer>
         <img src={Character} alt='당근이'/>
     </StLayout>
@@ -34,4 +38,11 @@ const StContainer = styled.div`
     margin:0 auto;
     background-color:#fff;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+`
+const Wrap = styled.div`
+  width:100%;
+  height:calc(100vh - 55px);
+  padding: 0 20px;
+  box-sizing:border-box;
+  /* text-align:center; */
 `
