@@ -1,5 +1,7 @@
 import Login from './Login'
 import SignUp from './SignUp'
-import Main from './Main'
+import Intro from './Intro'
+import MyPage from './MyPage';
+import Main from './Main';
 
-export {Login, SignUp, Main};
+export {Login, SignUp, Intro, MyPage, Main};
