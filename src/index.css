@@ -12,6 +12,7 @@ body{
 a{
     font-family: 'Noto Sans KR', sans-serif;
     all : unset;
+    cursor:pointer;
 }
 ul,ol,dl{
     font-family: 'Noto Sans KR', sans-serif;
