@@ -23,7 +23,6 @@ function Main() {
 
 export default Main;
 
-
 const TextWrap = styled.div`
   height:calc(100% - 150px);
   display:flex;
@@ -43,6 +42,12 @@ const TextWrap = styled.div`
     width:150px;
     margin:0 auto;
   }
+
+const Wrap = styled.div`
+  width:100%;
+  padding: 0 20px;
+  box-sizing:border-box;
+
 `
 
 const ButtonWrap = styled.div`

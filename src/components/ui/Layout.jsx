@@ -1,7 +1,6 @@
 import React from 'react'
 import { styled } from 'styled-components';
 import Character from "../../assets/carrot-character.png"
-import Header from './Header';
 
 function Layout({children}) {
   return (
