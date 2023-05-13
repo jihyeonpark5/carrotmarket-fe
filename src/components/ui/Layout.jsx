@@ -41,6 +41,9 @@ const StLayout = styled.div`
         width:300px;
         transform:rotate(180deg);
     }
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
     @media (max-width: 1400px){
         &>img.tcharacter{
