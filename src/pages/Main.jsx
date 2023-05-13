@@ -1,5 +1,4 @@
 
-import React from 'react'
 import React from 'react';
 import { styled } from 'styled-components';
 import {CommonButton, Layout} from '../components/ui';

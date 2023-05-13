@@ -7,7 +7,10 @@ html{
 body{
     font-family: 'Noto Sans KR', sans-serif;
     padding:0;
-    margin:0 !important;
+    margin:0;
+}
+body::-webkit-scrollbar {
+  display: none;
 }
 a{
     font-family: 'Noto Sans KR', sans-serif;
