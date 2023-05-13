@@ -180,7 +180,7 @@ const WriteButton = styled.button`
   height: 60px;
   position: fixed;
   top: 810px;
-  right: 760px;
+  left: 685px;
   border: none;
   border-radius: 50%;
   background-color: #FF7E36;
