@@ -44,7 +44,7 @@ function SignUp() {
 
                 <Flx>
                     <label htmlFor='ID'>아이디</label>
-                    <StyledInput type="text" value={input.id} id='id' placeholder='5~10글자 사이 영문 소문자,숫자'/>
+                    <StyledInput type="text" value={input.id} id='id' placeholder='5~10글자 사이 영문 소문자,숫자' onChange={onChangeInputHandler}/>
                     <CommonButton size='small' onClick={() => onDoubleCheckIdHandler}>중복확인</CommonButton>
                     {
                         /^[a-z0-9]{8,15}$/.test(input.id) ?
@@ -56,7 +56,7 @@ function SignUp() {
                 
                 <Flx>
                     <label htmlFor='PW'>패스워드</label>
-                    <Input type="password" value={input.pw} id='pw' placeholder='8~15글자 사이 영문,숫자,특수문자'/>
+                    <Input type="password" value={input.pw} id='pw' placeholder='8~15글자 사이 영문,숫자,특수문자' onChange={onChangeInputHandler}/>
                     {
                         /^[a-zA-Z0-9!@#$%^&*()\-_=+{};:,.<>?[\]\\/]{8,15}$/.test(input.pw) ?
                         null
@@ -68,7 +68,7 @@ function SignUp() {
 
                 <Flx>
                     <label htmlFor='PWConfirm'>중복확인</label>
-                    <Input type="password" value="" id='pwConfirm' placeholder='비밀번호 확인을 위해 한번 더 입력해주세요'/>
+                    <Input type="password" value={input.pwConfirm} id='pwConfirm' placeholder='비밀번호 확인을 위해 한번 더 입력해주세요' onChange={onChangeInputHandler}/>
                     {
                         input.pw === input.pwConfirm ?
                         null
@@ -90,8 +90,9 @@ const StForm = styled.form`
     display:flex;
     flex-direction:column;
     justify-content:space-between;
-    height:calc(100vh - 150px);
+    height:calc(100vh - 140px);
     padding-top:50px;
+    box-sizing:border-box;
     &>div>div{
         position:relative;
         border:1ps solid #f00;

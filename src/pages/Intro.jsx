@@ -25,7 +25,7 @@ export default Intro;
 
 
 const TextWrap = styled.div`
-  height:calc(100% - 150px);
+  height:calc(100vh - 250px);
   display:flex;
   flex-direction:column;
   justify-content:center;

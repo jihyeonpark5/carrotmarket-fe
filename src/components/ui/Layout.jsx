@@ -73,8 +73,8 @@ const StContainer = styled.div`
 `
 const Wrap = styled.div`
   width:100%;
-  /* height:calc(100vh - 55px); */
-  padding: 0 20px 50px;
+  min-height:calc(100vh - 115px);
+  padding: 0 20px 70px;
   box-sizing:border-box;
   /* text-align:center; */
 `
