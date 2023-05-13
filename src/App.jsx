@@ -1,7 +1,7 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Main, Login, SignUp, MyPage, Intro, BoardList, Search, ChatList, BoardDetail } from './pages/index';
+import { Main, Login, SignUp, MyPage, Intro, BoardList, Search, ChatList, BoardDetail, BoardWrite } from './pages/index';
 
 const queryClient = new QueryClient();
 
@@ -18,6 +18,7 @@ function App() {
           <Route path="/Search" element={<Search />} />
           <Route path="/BoardList" element={<BoardList />} />
           <Route path="/BoardDetail" element={<BoardDetail />} />
+          <Route path="/BoardWrite" element={<BoardWrite />} />
           <Route path="/ChatList" element={<ChatList />} />
         </Routes>
       </BrowserRouter>

@@ -13,7 +13,7 @@ function BoardDetail() {
         <Image
           width={'440px'}
           height={'440px'}
-          borderradius={'0px'}
+          borderradius={'5px'}
           src={carrot}
           alt={'상품 이미지'}
         />
@@ -31,7 +31,12 @@ function BoardDetail() {
               <DetailH3>역삼동</DetailH3>
             </div>
           </UserInfoDiv>
+          {/* 로그인 한 회원 === 글 작성자면 UserEditDiv, 불일치하면 CommonButton 출력 */}
           <CommonButton size="small">채팅하기</CommonButton>
+          {/* <UserEditDiv>
+            <span>수정하기</span>
+            <span>삭제하기</span>
+          </UserEditDiv> */}
         </UserDiv>
         <DetailDiv>
           <DetailH1>당근이 인형 팝니다.</DetailH1>
@@ -78,6 +83,14 @@ const UserInfoDiv = styled.div`
   & img {
     margin-right: 10px;
   }
+`
+
+const UserEditDiv = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 14px;
+  color: grey;
 `
 
 const DetailDiv = styled.div`
