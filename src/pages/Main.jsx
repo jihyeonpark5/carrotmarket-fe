@@ -1,17 +1,11 @@
-
-import React from 'react';
-import { styled } from 'styled-components';
-import {CommonButton, Layout} from '../components/ui';
-import carrot from '../assets/carrot.webp'
-import { useNavigate } from 'react-router-dom';
-
+import React from 'react'
+import { Layout } from '../components/ui'
 
 function Main() {
   const navigate = useNavigate();
   return (
-    <div>Main</div>
+    <Layout>Main</Layout>
   )
 }
 
 export default Main
-
