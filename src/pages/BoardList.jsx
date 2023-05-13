@@ -160,6 +160,7 @@ const ListTitleH1 = styled.h1`
 `
 
 const ListPriceH2 = styled.h2`
+  margin: 0;
   & span {
     font-size: 20px;
     font-weight: 600;
