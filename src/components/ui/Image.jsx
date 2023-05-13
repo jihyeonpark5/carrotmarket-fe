@@ -3,15 +3,15 @@ import styled from 'styled-components';
 
 const SetImages = styled.img`
   ${({ width, height }) => `width: ${width}; height: ${height};`}
-  ${( borderRadius ) => `border-radius: ${borderRadius}`}
+  ${({ borderradius }) => `border-radius: ${borderradius};`}
 `
 
-function Image({ width, height, borderRadius, src, alt }) {
+function Image({ width, height, borderradius, src, alt }) {
   return (
     <SetImages
       width={width}
       height={height}
-      borderRadius={borderRadius}
+      borderradius={borderradius}
       src={src}
       alt={alt}
     />
