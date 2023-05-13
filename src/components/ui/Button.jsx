@@ -15,7 +15,7 @@ const buttonSizes = {
     small: {
         fontWeight: "normal",
         minWidth: "100px",
-        height: "35px",
+        height: "45px",
     }
 };
 
@@ -25,7 +25,7 @@ const ButtonStyle = styled.button`
     min-width: ${(props) => buttonSizes[props.size].minWidth};
     height: ${(props) => buttonSizes[props.size].height};
 
-    margin:5px 0;
+    /* margin:5px 0; */
     font-size:18px;
     border: none;
     border-radius: 10px;
