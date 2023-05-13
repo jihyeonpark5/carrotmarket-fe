@@ -5,7 +5,7 @@ import { SlArrowDown } from 'react-icons/sl';
 import { GoSearch } from 'react-icons/go';
 import { HiPlus } from 'react-icons/hi';
 // * 이미지 임시
-import carrot from '../assets/carrot.webp';
+import carrot from '../assets/dangeunee_test_img.png';
 
 function BoardList() {
   return (
@@ -24,8 +24,8 @@ function BoardList() {
       <ListSection>
         <ListOneDiv>
           <Image
-            width={'140px'}
-            height={'140px'}
+            width={'130px'}
+            height={'130px'}
             borderRadius={'0px'}
             src={carrot}
             alt={'상품 이미지'}
@@ -42,8 +42,8 @@ function BoardList() {
         </ListOneDiv>
         <ListOneDiv>
           <Image
-            width={'140px'}
-            height={'140px'}
+            width={'130px'}
+            height={'130px'}
             borderRadius={'0px'}
             src={carrot}
             alt={'상품 이미지'}
@@ -60,8 +60,8 @@ function BoardList() {
         </ListOneDiv>
         <ListOneDiv>
           <Image
-            width={'140px'}
-            height={'140px'}
+            width={'130px'}
+            height={'130px'}
             borderRadius={'0px'}
             src={carrot}
             alt={'상품 이미지'}
@@ -103,12 +103,13 @@ const ListSection = styled.section`
 `
 
 const ListOneDiv = styled.div`
-  padding: 5px 0 10px 0;
+  padding: 15px 5px;
   display: flex;
   border-bottom: 1px solid lightgrey;
 `
 
 const ListInfoDiv = styled.div`
+  margin-left: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -128,8 +129,8 @@ const ListPriceH2 = styled.h2`
 `
 
 const ListDetailH3 = styled.h3`
+  margin: 10px 0 7px 0;
   font-size: 15px;
   font-weight: 300;
-  margin: 10px 0 7px 0;
   color: grey;
 `
