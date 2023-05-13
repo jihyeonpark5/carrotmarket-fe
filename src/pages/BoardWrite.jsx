@@ -6,6 +6,7 @@ import { AiFillMinusCircle } from 'react-icons/ai';
 // * 이미지 임시
 import example from '../assets/board_example.jpg';
 
+// ! 글 작성하기, 수정하기 모두 해당 페이지에서 진행
 function BoardWrite() {
   return (
     <Layout>
@@ -49,6 +50,7 @@ function BoardWrite() {
             />
           </SetInfo>
         </SetBoardForm>
+        {/* 수정하기 클릭해 진입했을 경우 글 수정하기로 출력 */}
         <CommonButton size={'large'}>글 작성하기</CommonButton>
       </ContentSection>
     </Layout>
