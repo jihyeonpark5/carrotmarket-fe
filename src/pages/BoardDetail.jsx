@@ -13,7 +13,7 @@ function BoardDetail() {
         <Image
           width={'440px'}
           height={'440px'}
-          borderradius={'0px'}
+          borderradius={'5px'}
           src={carrot}
           alt={'상품 이미지'}
         />
