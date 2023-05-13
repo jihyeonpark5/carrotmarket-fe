@@ -2,7 +2,6 @@ import React from 'react'
 import { styled } from 'styled-components';
 import {CommonButton, Flx, Input, Layout} from '../components/ui';
 
-
 function Login() {
   return (
     <Layout>
@@ -31,7 +30,7 @@ const StForm = styled.form`
     display:flex;
     flex-direction:column;
     justify-content:space-between;
-    height:calc(100vh - 150px);
+    height:calc(100vh - 190px);
     padding-top:50px;
 
     & label{
