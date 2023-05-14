@@ -7,9 +7,9 @@ import exampleImg from '../assets/board_example.jpg';
 function ChatList() {
   return (
     <Layout>
-        <h1 style={{marginBottom:"3px"}}>채팅</h1>
+        <h1 style={{fontSize:"25px",marginBottom:"3px"}}>채팅</h1>
         <ChatListContainer>{/*  <---  채팅방 전체 감싸주는 컨테이너 */}
-            <ChatRoom> {/*  <--- 채팅  */}
+            <ChatRoom> {/*  <--- 채팅방  */}
                 <UserImage><img src={userDefaultImg} alt='사용자기본이미지'/></UserImage> 
                 <Chat>
                     <h2>구매자아이디최대열글자 <span>구매자 지역정보</span></h2>{/*  <--- 지역정보는 옵션입니다 ㅎㅅㅎ  */}
