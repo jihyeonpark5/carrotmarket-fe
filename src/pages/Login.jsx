@@ -64,8 +64,13 @@ const StForm = styled.form`
     display:flex;
     flex-direction:column;
     justify-content:space-between;
+<<<<<<< HEAD
     height:calc(100vh - 220px);
     padding-top:30px;
+=======
+    height:calc(100vh - 190px);
+    padding-top:50px;
+>>>>>>> d16b8ea53f866db836b7e28e378292bd3c38e795
 
     & label{
         display:inline-block;
