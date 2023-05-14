@@ -160,6 +160,7 @@ const ListTitleH1 = styled.h1`
 `
 
 const ListPriceH2 = styled.h2`
+  margin: 0;
   & span {
     font-size: 20px;
     font-weight: 600;
@@ -179,7 +180,7 @@ const WriteButton = styled.button`
   height: 60px;
   position: fixed;
   top: 810px;
-  right: 760px;
+  right: 750px;
   border: none;
   border-radius: 50%;
   background-color: #FF7E36;
