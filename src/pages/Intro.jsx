@@ -1,13 +1,13 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import {CommonButton, Layout} from '../components/ui';
+import {CommonButton, IntroLayout} from '../components/ui';
 import carrot from '../assets/carrot.webp'
 import { useNavigate } from 'react-router-dom';
 
 function Intro() {
   const navigate = useNavigate();
   return (
-    <Layout>
+    <IntroLayout>
         <TextWrap>
           <img src={carrot} alt='당근마켓 메인 이미지'/>
           <h1>당신 근처의 당근마켓</h1>
@@ -17,7 +17,7 @@ function Intro() {
           <CommonButton size='large' onClick={() => navigate('/Login')}>로그인</CommonButton>
           <CommonButton size='large' onClick={() => navigate('/SignUp')}>회원가입</CommonButton>
         </ButtonWrap>
-    </Layout>
+    </IntroLayout>
   )
 }
 
@@ -25,7 +25,7 @@ export default Intro;
 
 
 const TextWrap = styled.div`
-  height:calc(100vh - 250px);
+  height:calc(100vh - 180px);
   display:flex;
   flex-direction:column;
   justify-content:center;
