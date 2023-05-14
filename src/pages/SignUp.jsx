@@ -1,39 +1,68 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { Input, CommonButton, Layout, Flx } from '../components/ui';
+import { SlArrowLeft } from "react-icons/sl";
+import { Input, CommonButton, Flx, IntroLayout } from '../components/ui';
+import { useMutation } from 'react-query';
+import { addUserSignUp } from '../api/users';
 
 function SignUp() {
+    // 회원가입에서 필요한 Hook연결하기
+    const navigate = useNavigate();
+    const mutate = useMutation();
+
+    //Input창 저장용 state
     const [input, setInput] = useState({
         id:'',
         pw:'',
         pwConfirm:'',
-        nickname:''
+        nickname:'',
+        address1depth:'',
+        address2depth:'',
+        address3depth:''
     });
 
+    // Input창 작성용 onChangehandler
     const onChangeInputHandler = (e) => {
         setInput({...input, [e.target.id]:e.target.value})
     };
 
+    // 닉네임 중복체크용 이벤트핸들러
+    const onDoubleCheckNicknameHandler = () => {
+
+    }
+
+    // Id 중복체크용 이벤트핸들러
     const onDoubleCheckIdHandler = () => {
 
     }
 
+    // 가입하기 버튼 클릭 이벤트핸들러
     const onSubmitJoinHandler = (e) => {
-        e.preventdefault();
+        e.preventDefault()
         const userInfo = {
             id:input.id,
             pw:input.pw,
-            nickname:input.nickname
-        }
-        setInput({id:'',pw:'',nickname:''});
+            nickname:input.nickname,
+            address1depth:input.address1depth,
+            address2depth:input.address2depth,
+            address3depth:input.address3depth
+        };
+        addUserSignUp(userInfo);
+        setInput({id:'',pw:'',nickname:'',pwConfirm:''});
     };
+
+ 
   return (
-    <Layout>
-        <StForm onSubmit={() => onSubmitJoinHandler}>
+    <IntroLayout>
+        <Backbutton type='button' onClick={() => navigate(-1)}><SlArrowLeft /></Backbutton>
+        <h1 style={{marginTop:"40px",marginBottom:"0px"}}>회원가입</h1>
+        <StForm onSubmit={onSubmitJoinHandler}>
             <div>
                 <Flx>
                     <label htmlFor='nickname'>닉네임</label>
-                    <Input type="text" value={input.nickname} id='nickname' placeholder='3~10글자 사이 영문' onChange={onChangeInputHandler}/>
+                    <StyledInput type="text" value={input.nickname} id='nickname' placeholder='3~10글자 사이 영문' onChange={onChangeInputHandler}/>
+                    <CommonButton size='small' onClick={() => onDoubleCheckIdHandler}>중복확인</CommonButton>
                     {
                         /^[a-zA-Z]{3,10}$/.test(input.nickname) ?
                         null
@@ -76,22 +105,39 @@ function SignUp() {
                         <p className='alertText'>비밀번호가 일치하지 않습니다.</p>
                     }
                 </Flx>
+
+                <Flx>
+                    <label htmlFor='address'>주소</label>
+                    <Input type="text" value={input.address1depth} id='address1depth' style={{width:"30%",marginBottom:"15px"}} placeholder='ex) 서울시'></Input>
+                    <Input type="text" value={input.address2depth} id='address2depth' style={{width:"30%",marginBottom:"15px"}} placeholder='ex) 노원구'></Input>
+                    <Input type="text" value={input.address3depth} id='address3depth' style={{width:"30%",marginBottom:"15px"}} placeholder='ex) 공릉동'></Input>
+                </Flx>
+                <CommonButton size='large' onClick={() => onDoubleCheckIdHandler}>주소 확인</CommonButton>
                 
             </div>
-            <CommonButton size='large'>회원가입</CommonButton>
+            <CommonButton size='large'>가입하기</CommonButton>
         </StForm>
-    </Layout>
+    </IntroLayout>
   )
 }
 
 export default SignUp;
 
+const Backbutton = styled.button`
+    position:relative;
+    top:20px;
+    left:0;
+    border:none;
+    background-color:transparent;
+    font-size:22px;
+    color:#777;
+`
 const StForm = styled.form`
     display:flex;
     flex-direction:column;
     justify-content:space-between;
-    height:calc(100vh - 140px);
-    padding-top:50px;
+    height:calc(100vh - 190px);
+    padding-top:30px;
     box-sizing:border-box;
     &>div>div{
         position:relative;

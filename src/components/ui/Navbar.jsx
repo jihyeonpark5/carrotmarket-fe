@@ -20,10 +20,10 @@ function Navbar() {
   return (
     <StNavbar>
       <Flx>
-        <button type='button' onClick={() => toggleIcon(AiOutlineHome, '/MyPage')}>{location.pathname === '/MyPage'  ? <AiFillHome /> : <AiOutlineHome />}</button>
+        <button type='button' onClick={() => toggleIcon(AiOutlineHome, '/BoardList')}>{location.pathname === '/BoardList'  ? <AiFillHome /> : <AiOutlineHome />}</button>
         <button type='button' onClick={() => toggleIcon(AiOutlineSearch, '/Search')}>{location.pathname === '/Search' ? <RiSearchFill /> : <RiSearchLine />}</button>
-        <button type='button' onClick={() => toggleIcon(BsChatDots, '/ChatList')}>{location.pathname === '/Login' ?  <BsChatDotsFill /> : <BsChatDots />}</button>
-        <button type='button' onClick={() => toggleIcon(IoPersonOutline, '/SignUp')}>{location.pathname === '/SignUp' ? <IoPerson /> : <IoPersonOutline />}</button>
+        <button type='button' onClick={() => toggleIcon(BsChatDots, '/ChatList')}>{location.pathname === '/ChatList' ?  <BsChatDotsFill /> : <BsChatDots />}</button>
+        <button type='button' onClick={() => toggleIcon(IoPersonOutline, '/MyPage')}>{location.pathname === '/MyPage' ? <IoPerson /> : <IoPersonOutline />}</button>
       </Flx>
     </StNavbar>
   )
