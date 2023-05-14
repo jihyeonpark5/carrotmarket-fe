@@ -8,6 +8,8 @@ import BoardList from './BoardList';
 import BoardDetail from './BoardDetail'
 import BoardWrite from './BoardWrite'
 import ChatList from './ChatList'
+import ChatDetail from './ChatDetail'
+import LocationSetting from './LocationSetting'
 
-export { Login, SignUp, Intro, MyPage, Main, Search, BoardList, BoardDetail, BoardWrite, ChatList };
+export { Login, SignUp, Intro, MyPage, Main, Search, BoardList, BoardDetail, BoardWrite, ChatList, ChatDetail, LocationSetting };
 
