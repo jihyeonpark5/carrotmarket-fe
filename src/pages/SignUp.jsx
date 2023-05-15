@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import { SlArrowLeft } from "react-icons/sl";
 import { Input, CommonButton, Flx, IntroLayout } from '../components/ui';
 import { useMutation } from 'react-query';
-import { addUserSignUp } from '../api/users';
+import { userSignup } from '../api/users';
 
 function SignUp() {
     // 회원가입에서 필요한 Hook연결하기
@@ -13,46 +13,67 @@ function SignUp() {
 
     //Input창 저장용 state
     const [input, setInput] = useState({
-        id:'',
-        pw:'',
+        userId:'',
+        password:'',
         pwConfirm:'',
         nickname:'',
-        address1depth:'',
-        address2depth:'',
-        address3depth:''
+        address:{
+            region1depthName:'',
+            region2depthName:'',
+            region3depthName:'',
+        }
     });
 
     // Input창 작성용 onChangehandler
     const onChangeInputHandler = (e) => {
-        setInput({...input, [e.target.id]:e.target.value})
+        const { id, value } = e.target;
+        if (id === "region1depthName" || id === "region2depthName" || id === "region3depthName") {
+            setInput({
+              ...input,
+              address: {
+                ...input.address,
+                [id]: value,
+              },
+            });
+          } else {
+            setInput({
+              ...input,
+              [id]: value,
+            });
+          }
     };
 
-    // 닉네임 중복체크용 이벤트핸들러
-    const onDoubleCheckNicknameHandler = () => {
-
-    }
-
-    // Id 중복체크용 이벤트핸들러
-    const onDoubleCheckIdHandler = () => {
-
+    //중복체크용 이벤트핸들러
+    const onDoubleCheckHandler = () => {
+        const userInfo = {
+            userId:input.userId,
+            password:input.password,
+            nickname:input.nickname,
+            address:{
+                region1depthName:input.address.region1depthName,
+                region2depthName:input.address.region2depthName,
+                region3depthName:input.address.region3depthName,
+            }
+        };
+        userSignup(userInfo);
     }
 
     // 가입하기 버튼 클릭 이벤트핸들러
     const onSubmitJoinHandler = (e) => {
         e.preventDefault()
         const userInfo = {
-            id:input.id,
-            pw:input.pw,
+            userId:input.userId,
+            password:input.password,
             nickname:input.nickname,
-            address1depth:input.address1depth,
-            address2depth:input.address2depth,
-            address3depth:input.address3depth
+            address:{
+                region1depthName:input.address.region1depthName,
+                region2depthName:input.address.region2depthName,
+                region3depthName:input.address.region3depthName,
+            }
         };
-        addUserSignUp(userInfo);
-        setInput({id:'',pw:'',nickname:'',pwConfirm:''});
+        userSignup(userInfo);
     };
 
- 
   return (
     <IntroLayout>
         <Backbutton type='button' onClick={() => navigate(-1)}><SlArrowLeft /></Backbutton>
@@ -61,8 +82,13 @@ function SignUp() {
             <div>
                 <Flx>
                     <label htmlFor='nickname'>닉네임</label>
-                    <StyledInput type="text" value={input.nickname} id='nickname' placeholder='3~10글자 사이 영문' onChange={onChangeInputHandler}/>
-                    <CommonButton size='small' onClick={() => onDoubleCheckIdHandler}>중복확인</CommonButton>
+                    <Input 
+                    type="text" 
+                    value={input.nickname} 
+                    id='nickname' 
+                    placeholder='3~10글자 사이 영문' 
+                    onChange={onChangeInputHandler}/>
+                    {/* <CommonButton size='small' onClick={() => onSubmitJoinHandler}>중복확인</CommonButton> */}
                     {
                         /^[a-zA-Z]{3,10}$/.test(input.nickname) ?
                         null
@@ -72,11 +98,16 @@ function SignUp() {
                 </Flx>
 
                 <Flx>
-                    <label htmlFor='ID'>아이디</label>
-                    <StyledInput type="text" value={input.id} id='id' placeholder='5~10글자 사이 영문 소문자,숫자' onChange={onChangeInputHandler}/>
-                    <CommonButton size='small' onClick={() => onDoubleCheckIdHandler}>중복확인</CommonButton>
+                    <label htmlFor='userId'>아이디</label>
+                    <StyledInput 
+                    type="text" 
+                    value={input.userId} 
+                    id='userId' 
+                    placeholder='5~10글자 사이 영문 소문자,숫자' 
+                    onChange={onChangeInputHandler}/>
+                    <CommonButton size='small' onClick={() => userSignup}>중복확인</CommonButton>
                     {
-                        /^[a-z0-9]{8,15}$/.test(input.id) ?
+                        /^[a-z0-9]{8,15}$/.test(input.userId) ?
                         null
                         :
                         <p className='alertText'>8~15글자 사이 영문 소문자,숫자를 사용하세요.</p>
@@ -84,10 +115,15 @@ function SignUp() {
                 </Flx>
                 
                 <Flx>
-                    <label htmlFor='PW'>패스워드</label>
-                    <Input type="password" value={input.pw} id='pw' placeholder='8~15글자 사이 영문,숫자,특수문자' onChange={onChangeInputHandler}/>
+                    <label htmlFor='password'>패스워드</label>
+                    <Input 
+                    type="password" 
+                    value={input.password} 
+                    id='password' 
+                    placeholder='8~15글자 사이 영문,숫자,특수문자' 
+                    onChange={onChangeInputHandler}/>
                     {
-                        /^[a-zA-Z0-9!@#$%^&*()\-_=+{};:,.<>?[\]\\/]{8,15}$/.test(input.pw) ?
+                        /^[a-zA-Z0-9!@#$%^&*()\-_=+{};:,.<>?[\]\\/]{8,15}$/.test(input.password) ?
                         null
                         :
                         <p className='alertText'>8~15글자 사이 영문,숫자,특수문자를 사용하세요.</p>
@@ -97,9 +133,14 @@ function SignUp() {
 
                 <Flx>
                     <label htmlFor='PWConfirm'>중복확인</label>
-                    <Input type="password" value={input.pwConfirm} id='pwConfirm' placeholder='비밀번호 확인을 위해 한번 더 입력해주세요' onChange={onChangeInputHandler}/>
+                    <Input 
+                    type="password" 
+                    value={input.pwConfirm} 
+                    id='pwConfirm' 
+                    placeholder='비밀번호 확인을 위해 한번 더 입력해주세요' 
+                    onChange={onChangeInputHandler}/>
                     {
-                        input.pw === input.pwConfirm ?
+                        input.password === input.pwConfirm ?
                         null
                         :
                         <p className='alertText'>비밀번호가 일치하지 않습니다.</p>
@@ -108,11 +149,29 @@ function SignUp() {
 
                 <Flx>
                     <label htmlFor='address'>주소</label>
-                    <Input type="text" value={input.address1depth} id='address1depth' style={{width:"30%",marginBottom:"15px"}} placeholder='ex) 서울시'></Input>
-                    <Input type="text" value={input.address2depth} id='address2depth' style={{width:"30%",marginBottom:"15px"}} placeholder='ex) 노원구'></Input>
-                    <Input type="text" value={input.address3depth} id='address3depth' style={{width:"30%",marginBottom:"15px"}} placeholder='ex) 공릉동'></Input>
+                    <Input 
+                        type="text" 
+                        value={input?.address?.region1depthName} 
+                        id="region1depthName"
+                        style={{width:"30%",marginBottom:"15px"}} 
+                        placeholder='ex) 서울시' 
+                        onChange={onChangeInputHandler}/>
+                    <Input 
+                        type="text" 
+                        value={input?.address?.region2depthName} 
+                        id='region2depthName' 
+                        style={{width:"30%",marginBottom:"15px"}} 
+                        placeholder='ex) 노원구' 
+                        onChange={onChangeInputHandler}/>
+                    <Input 
+                        type="text" 
+                        value={input?.address?.region3depthName} 
+                        id='region3depthName'
+                        style={{width:"30%",marginBottom:"15px"}} 
+                        placeholder='ex) 공릉동' 
+                        onChange={onChangeInputHandler}/>
                 </Flx>
-                <CommonButton size='large' onClick={() => onDoubleCheckIdHandler}>주소 확인</CommonButton>
+                <CommonButton size="small" style={{float:"right"}} onClick={() => onSubmitJoinHandler}>주소 확인</CommonButton>
                 
             </div>
             <CommonButton size='large'>가입하기</CommonButton>
