@@ -1,79 +1,74 @@
 import React from 'react'
 import { styled } from 'styled-components';
-import { Layout } from '../components/ui';
+import { Layout, Image } from '../components/ui';
 import userDefaultImg from '../assets/user_default_image.jpg';
 import exampleImg from '../assets/board_example.jpg';
 
 function ChatList() {
   return (
     <Layout>
-        <h1 style={{fontSize:"25px",marginBottom:"3px"}}>채팅</h1>
-        <ChatListContainer>{/*  <---  채팅방 전체 감싸주는 컨테이너 */}
-            <ChatRoom> {/*  <--- 채팅방  */}
-                <UserImage><img src={userDefaultImg} alt='사용자기본이미지'/></UserImage> 
-                <Chat>
-                    <h2>구매자아이디최대열글자 <span>구매자 지역정보</span></h2>{/*  <--- 지역정보는 옵션입니다 ㅎㅅㅎ  */}
-                    <p>채팅내용이 길어지면 ellipsis 적용합니다...</p>
-                </Chat>
-                <BoardImage><img src={exampleImg} alt='상품이미지'/></BoardImage>
-            </ChatRoom>
-        </ChatListContainer>
+      <PageNameH1>채팅</PageNameH1>
+      <ChatListDiv>
+        <ChatRoomDiv>
+          <Image
+            width={'60px'}
+            height={'60px'}
+            borderradius={'50%'}
+            src={userDefaultImg}
+            alt={'채팅 상대방 회원 이미지'}
+          />
+          <ChatInfo>
+            <h2>구매자닉네임 <span>역삼동</span></h2>
+            <p>가격은 얼마 정도로 생각하시나요?</p>
+          </ChatInfo>
+          <Image
+            width={'60px'}
+            height={'60px'}
+            borderradius={'10px'}
+            src={exampleImg}
+            alt={'채팅 상대방 회원 이미지'}
+          />
+        </ChatRoomDiv>
+      </ChatListDiv>
     </Layout>
   )
 }
 
 export default ChatList;
 
-const ChatListContainer = styled.section`
-    width:100%;
+const PageNameH1 = styled.h1`
+  margin-bottom: 0;
+  padding: 10px 0;
+  font-size: 25px;
+  border-bottom: 1px solid lightgrey;
 `
-const ChatRoom = styled.div`
-    width:100%;
-    height:110px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    border-bottom:1px solid #eaeaea;
-`
-const UserImage = styled.div`
-    width:70px;
-    height:70px;
-    border-radius:50%;
-    border:1px solid #ccc;
-    overflow:hidden;
 
-    & img{
-        width:100%;
-    }
+const ChatListDiv = styled.div`
+  padding: 20px 0;
+  border-bottom: 1px solid lightgrey;
 `
-const Chat = styled.div`
-    width:calc(100% - 190px);
-    & h2{
-        font-size:20px;
-        line-height:1;
-        margin:3px 0;
-    }
-    & h2 span{
-        font-size:15px;
-        color:#9d9d9d;
-        font-weight:400;
-    }
-    & p{
-        width:100%;
-        text-overflow:ellipsis;
-        white-space:nowrap;
-        overflow:hidden;
-        margin:3px 0;
-    }
-`
-const BoardImage = styled.div`
-    width:70px;
-    height:70px;
-    border-radius:12px;
-    border:1px solid #ccc;
-    overflow:hidden;
 
-    & img{
-        width:100%;
-    }
+const ChatRoomDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
+const ChatInfo = styled.div`
+  width: 75%;
+  margin: 0 15px;
+  & h2 {
+    font-size: 20px;
+    margin: 0;
+  }
+  & span {
+    font-size: 14px;
+    font-weight: 300;
+    color: grey;
+  }
+  & p {
+    font-size: 16px;
+    margin: 3px 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 `

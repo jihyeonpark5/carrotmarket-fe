@@ -1,11 +1,16 @@
 import React from 'react'
+import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
+import { getBoard } from '../api/boards';
+import { userLogout } from '../api/users';
 import { CommonButton, Layout } from '../components/ui'
+import exampleImg from '../assets/board_example.jpg';
 
 function MyPage() {
     const navigate = useNavigate();
 
+    // 탭메뉴 관련 js
     const tabMenuHandler = (e) => {
         const targetMenu = e.target;
         const allMenus = document.querySelectorAll('.tabMenu');
@@ -27,12 +32,29 @@ function MyPage() {
         tabContents.style.transform = `translateX(-${contentsDistance}%)`;
         console.log(contentsDistance)
     };
+    const access_token = sessionStorage.getItem('access_token');
+    const { isLoading, isError, data } = useQuery("getBoard", () => getBoard(access_token));
+    if(isLoading) {
+        console.log(data)
+        return <h1>로딩중입니다...</h1>
+    }
+    if(isError) {
+        return <h1>오류가 발생하였습니다...</h1>
+    }
+
+    const Logout = () => {
+        userLogout();
+        sessionStorage.removeItem('access_token');
+        navigate('/')
+    };
     
   return (
+
     <Layout>
         <h1>닉네임님의 정보</h1>
-        <CommonButton onClick={() => navigate('/newPost')} style={{marginRight:'13px'}}>글쓰기</CommonButton>
-        <CommonButton onClick={() => navigate('/editNickname')}>닉네임 변경</CommonButton>
+        <CommonButton size="small" onClick={() => navigate('/newPost')} style={{marginRight:'13px'}}>글쓰기</CommonButton>
+        {/* <CommonButton size="small" onClick={() => navigate('/editNickname')} style={{marginRight:'13px'}}>닉네임 변경</CommonButton> */}
+        <CommonButton size="small" onClick={Logout}>로그아웃</CommonButton>
  
         <TabContainer>
             <TabMenuArea>
@@ -45,54 +67,53 @@ function MyPage() {
             <TabContentsArea>
                 <TabSlideArea className='tabContents'>
                     <Contents>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
-                        <div>판매중 영역</div>
+                        {/* 판매중 영역 */}
+                        <ItemBox>
+                            <ItemArea>
+                                <ImgBox>
+                                    <img src={exampleImg} alt="판매상품이미지" />
+                                </ImgBox>
+                                <Info>
+                                    <h2>상품명</h2>
+                                    <p>동네</p>
+                                    <b>가격</b>
+                                </Info>
+                            </ItemArea>
+                            <ButtonWrap>
+                                <button>상품삭제</button>
+                                <button>거래완료</button>
+                            </ButtonWrap>
+                        </ItemBox>
                     </Contents>
                     <Contents>
-                        <div>판매완료 영역</div>
+                        {/* 거래 완료 영역 */}
+                        <ItemBox>
+                            <ItemArea>
+                                <ImgBox>
+                                    <img src={exampleImg} alt="판매상품이미지" />
+                                </ImgBox>
+                                <Info>
+                                    <h2>상품명</h2>
+                                    <p>동네</p>
+                                    <b>가격</b>
+                                </Info>
+                            </ItemArea>
+                        </ItemBox>
                     </Contents>
                     <Contents>
-                        <div>찜 영역</div>
+                        {/* 찜 영역 */}
+                        <ItemBox>
+                            <ItemArea>
+                                <ImgBox>
+                                    <img src={exampleImg} alt="판매상품이미지" />
+                                </ImgBox>
+                                <Info>
+                                    <h2>상품명</h2>
+                                    <p>동네</p>
+                                    <b>가격</b>
+                                </Info>
+                            </ItemArea>
+                        </ItemBox>
                     </Contents>
                 </TabSlideArea>
             </TabContentsArea>
@@ -144,9 +165,55 @@ const TabSlideArea = styled.div`
 `
 const Contents = styled.div`
     width:100%;
-    background-color:beige;
-
+    /* background-color:beige; */
     &>div{
         width:100%;
+    }
+`
+const ItemBox = styled.div`
+    border-bottom:1px solid #ccc;
+`
+const ItemArea = styled.div`
+    padding:20px 0;
+    display:flex;
+    align-items:center;
+    width:100%;
+`
+const ImgBox = styled.div`
+    width:110px;
+    height:110px;
+    overflow:hidden;
+    border-radius:10px;
+    & img{
+        width:100%;
+        height:100%;
+    }
+`
+const Info = styled.div`
+    width:calc(100% - 130px);
+    padding-left:20px;
+    & h2{
+        margin:0;
+        font-size:20px;
+        font-weight:500;
+    }
+    & p{
+        margin: 0;
+        color:#777;
+    }
+`
+const ButtonWrap = styled.div`
+    width:100%;
+    & button{
+        width:50%;
+        height:50px;
+        background-color:#fff;
+        border:none;
+        border-top:1px solid #ccc;
+        font-size:17px;
+        font-weight:500;
+    }
+    & button:first-child{
+        border-right:1px solid #ccc;
     }
 `

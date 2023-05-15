@@ -3,29 +3,44 @@ import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { SlArrowLeft } from "react-icons/sl";
 import {CommonButton, Flx, Input, IntroLayout } from '../components/ui';
-import { addLogin } from '../api/users';
+import { userLogin } from '../api/users';
+import { useMutation } from 'react-query';
 
 function Login() {
     const navigate = useNavigate();
     const [input, setInput] = useState({
-        id:'',
-        pw:''
+        userId:'',
+        password:''
     });
 
     const onChangeInputHandler = (e) => {
         setInput({...input, [e.target.id]: e.target.value})
     };
 
+    const mutation = useMutation(userLogin, {
+        onSuccess: (response) => {
+            // console.log('mutation',response)
+            localStorage.setItem("refresh_token", response.headers['refresh_token']);
+            sessionStorage.setItem("access_token", response.headers['access_token']);
+            navigate("/BoardList");
+        },
+        onError: (error) => {
+            console.log(error);
+        }
+    });
+
     // 가입하기 버튼 클릭 이벤트핸들러
     const onSubmitLoginHandler = (e) => {
         e.preventDefault()
         const userInfo = {
-            id:input.id,
-            pw:input.pw
+            userId:input.userId,
+            password:input.password
         };
-        addLogin(userInfo);
-        setInput({id:'',pw:''});
+        mutation.mutate(userInfo);
+        setInput({userId:'',password:''});
     };
+
+    
   return (
     <IntroLayout>
         <Backbutton type='button' onClick={() => navigate(-1)}><SlArrowLeft /></Backbutton>
@@ -33,13 +48,13 @@ function Login() {
         <StForm onSubmit={onSubmitLoginHandler}>
             <div>
                 <Flx>
-                    <label htmlFor='id'>아이디</label>
-                    <Input type="text" value={input.id} id='id' onChange={onChangeInputHandler}/>
+                    <label htmlFor='userId'>아이디</label>
+                    <Input type="text" value={input.id} id='userId' onChange={onChangeInputHandler}/>
                 </Flx>
                 
                 <Flx>
-                    <label htmlFor='pw'>패스워드</label>
-                    <Input type="password" value={input.pw} id='pw' onChange={onChangeInputHandler}/>
+                    <label htmlFor='password'>패스워드</label>
+                    <Input type="password" value={input.pw} id='password' onChange={onChangeInputHandler}/>
                 </Flx>
             </div>
         
@@ -64,13 +79,8 @@ const StForm = styled.form`
     display:flex;
     flex-direction:column;
     justify-content:space-between;
-<<<<<<< HEAD
     height:calc(100vh - 220px);
     padding-top:30px;
-=======
-    height:calc(100vh - 190px);
-    padding-top:50px;
->>>>>>> d16b8ea53f866db836b7e28e378292bd3c38e795
 
     & label{
         display:inline-block;
