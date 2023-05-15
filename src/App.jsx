@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Main, Login, SignUp, MyPage, Intro, BoardList, Search, BoardDetail, BoardWrite, ChatList, ChatDetail, LocationSetting } from './pages/index';
 
 
+
 const queryClient = new QueryClient();
 
 function App() {
