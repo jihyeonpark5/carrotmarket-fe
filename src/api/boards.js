@@ -37,6 +37,18 @@ export const getBoardDetail = (currentBoardId) => {
   })
 }
 
+// * 게시글 수정
+export const setEditBoard = (boardEditData) => {
+  return instance.put(`/api/board/${boardEditData.boardId}`)
+  .then((response) => {
+    console.log('axios 게시글 수정 성공!');
+    return response.data;
+  })
+  .catch((error) => {
+    console.error(error.response.data);
+  })
+}
+
 // * 게시글 삭제
 export const setDeleteBoard = (currentBoardId) => {
   return instance.put(`/api/board/${currentBoardId}`)

@@ -6,7 +6,7 @@ import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import carrot from '../assets/dangeunee_test_img.png';
 import userDefaultImg from '../assets/user_default_image.jpg';
 import { useQuery, QueryClient } from 'react-query';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getBoardDetai, setDeleteBoard } from '../api/boards';
 
 function BoardDetail() {
@@ -17,6 +17,20 @@ function BoardDetail() {
   // * 데이터 캐싱
   const queryClient = new QueryClient();
   queryClient.setQueryData('나머지 데이터', data);
+
+  // * 게시글 수정 버튼 클릭
+  const navigate = useNavigate();
+  const onBoardEdit = () => {
+    navigate(`/BoardWrite`, {
+      state: {
+        boardId: currentBoardId,
+        title: data.title,
+        price: data.price,
+        content: data.content,
+        image: data.image,
+      }
+    })
+  }
 
   // * 게시글 삭제 버튼 클릭
   const onBoardDelete = () => {
@@ -63,12 +77,8 @@ function BoardDetail() {
           {/* 로그인 한 회원 === 글 작성자면 UserEditDiv, 불일치하면 CommonButton 출력 */}
           <CommonButton size="small">채팅하기</CommonButton>
           {/* <UserEditDiv>
-            <span>수정하기</span>
-            <span
-              onClick={onBoardDelete} 
-            >
-              삭제하기
-            </span>
+            <span onClick={onBoardEdit}>수정하기</span>
+            <span onClick={onBoardDelete}>삭제하기</span>
           </UserEditDiv> */}
         </UserDiv>
         <DetailDiv>
