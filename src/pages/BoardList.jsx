@@ -42,27 +42,29 @@ function BoardList() {
         {
           !!boardData &&
           boardData.map((board) => {
-            <ListOneDiv key={board.id}>
-              <Image
-                width={'130px'}
-                height={'130px'}
-                borderradius={'10px'}
-                src={board.image}
-                alt={'상품 이미지'}
-              />
-              <ListInfoDiv>
-                <ListTitleH1>{board.title}</ListTitleH1>
-                <ListDetailH3>
-                  <span>{board.address}</span>
-                </ListDetailH3>
-                <ListPriceH2>
-                  {/* TODO 둘 다 잘 나오는지 확인 */}
-                  {/* {board.status && <StatusButton color={'black'}>거래완료</StatusButton>} */}
-                  {!!board.status ? <StatusButton color={'black'}>거래완료</StatusButton> : ''}
-                  {Number(board.price).toLocaleString()}원
-                </ListPriceH2>
-              </ListInfoDiv>
-            </ListOneDiv>
+            <Link to="`/BoardDetail/${board.id}`">
+              <ListOneDiv key={board.id}>
+                <Image
+                  width={'130px'}
+                  height={'130px'}
+                  borderradius={'10px'}
+                  src={board.image}
+                  alt={'상품 이미지'}
+                />
+                <ListInfoDiv>
+                  <ListTitleH1>{board.title}</ListTitleH1>
+                  <ListDetailH3>
+                    <span>{board.address}</span>
+                  </ListDetailH3>
+                  <ListPriceH2>
+                    {/* TODO 둘 다 잘 나오는지 확인 */}
+                    {/* {board.status && <StatusButton color={'black'}>거래완료</StatusButton>} */}
+                    {!!board.status ? <StatusButton color={'black'}>거래완료</StatusButton> : ''}
+                    {Number(board.price).toLocaleString()}원
+                  </ListPriceH2>
+                </ListInfoDiv>
+              </ListOneDiv>
+            </Link>
           })
         }
         <WriteButton>
