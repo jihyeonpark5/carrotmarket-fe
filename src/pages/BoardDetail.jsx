@@ -7,7 +7,7 @@ import carrot from '../assets/dangeunee_test_img.png';
 import userDefaultImg from '../assets/user_default_image.jpg';
 import { useQuery, QueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
-import { getBoardDetail } from '../api/boards';
+import { getBoardDetai, setDeleteBoard } from '../api/boards';
 
 function BoardDetail() {
   // * 게시글 상세 조회
@@ -17,6 +17,24 @@ function BoardDetail() {
   // * 데이터 캐싱
   const queryClient = new QueryClient();
   queryClient.setQueryData('나머지 데이터', data);
+
+  // * 게시글 삭제 버튼 클릭
+  const onBoardDelete = () => {
+    const deleteConfirm = window.confirm('게시글을 삭제하시겠습니까?');
+    if (!deleteConfirm) {
+      alert('게시글 삭제를 취소하였습니다.');
+      return;
+    } else {
+      deleteBoardMutation.mutate(currentBoardId);
+    }
+  }
+
+  // * 게시글 삭제 useMutation
+  const deleteBoardMutation = useMutation(setDeleteBoard, {
+    onSucess: (response) => {
+
+    }
+  })
 
   return (
     <Layout>
@@ -46,7 +64,11 @@ function BoardDetail() {
           <CommonButton size="small">채팅하기</CommonButton>
           {/* <UserEditDiv>
             <span>수정하기</span>
-            <span>삭제하기</span>
+            <span
+              onClick={onBoardDelete} 
+            >
+              삭제하기
+            </span>
           </UserEditDiv> */}
         </UserDiv>
         <DetailDiv>

@@ -37,6 +37,16 @@ export const getBoardDetail = (currentBoardId) => {
   })
 }
 
+// * 게시글 삭제
+export const setDeleteBoard = (currentBoardId) => {
+  return instance.put(`/api/board/${currentBoardId}`)
+  // TODO 실패 시 http status 코드에 따라 다른 alert msg 띄우기
+  .then((response) => {
+    console.log('axios 게시글 삭제 성공!');
+    return response;
+  })
+}
+
 // * 내 게시글 조회
 export const getBoard = ( access_token ) => {
     return instance.get('/api/myboard',{
