@@ -12,9 +12,10 @@ export const accessToken = sessionStorage.getItem('access_token');
 
 // access토큰이 만료되었을 때 refresh토큰을 이용하여 access토큰 재발급 받기
 export const tokenInstance = axios.create({
+    baseURL: process.env.REACT_APP_SERVER_URL,
     headers:{
-        access_token : 'Bearer' + accessToken,
-        refresh_token : 'Bearer' + refreshToken,
+        'Access_Token' : accessToken,
+        // 'Refresh_Token' : refreshToken,
     }
 });
 

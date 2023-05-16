@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { instance, request, tokenInstance } from './axios';
 
 // 회원가입
@@ -19,11 +18,9 @@ export const userSignup = (userInfo) => {
 export const userLogin = (userInfo) => {
     return instance.post('/api/member/login', userInfo)
     .then((response) => {
-        console.log(response)
         return response;
     })
     .catch((error) => {
-        // console.log(userInfo)
         console.log(error.response.data.responseMessage)
         // throw error;
     })
@@ -37,10 +34,12 @@ export const userLogout = () => {
         return response;
     })
     .catch((error) => {
-        console.log(error.response.data.responseMessage)
+        console.log(error)
         // throw error;
     })
 };
+
+// access_token 만료 시 새로운 token 발급
 
 
 

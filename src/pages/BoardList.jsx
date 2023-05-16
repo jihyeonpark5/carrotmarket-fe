@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import { Layout, Image, StatusButton } from '../components/ui';
+import { Layout, Image, StatusButton } from '../components/element';
 import { SlArrowDown } from 'react-icons/sl';
 // * 이미지 임시
 import carrot from '../assets/dangeunee_test_img.png';

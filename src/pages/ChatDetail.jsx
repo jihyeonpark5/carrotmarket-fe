@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
-import { Layout, Image, Input } from '../components/ui';
+import { Layout, Image, Input } from '../components/element';
 import { RxPaperPlane } from 'react-icons/rx';
 import Select from 'react-select';
 // * 이미지 임시

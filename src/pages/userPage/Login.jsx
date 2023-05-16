@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { SlArrowLeft } from "react-icons/sl";
-import {CommonButton, Flx, Input, IntroLayout } from '../components/ui';
-import { userLogin } from '../api/users';
+import {CommonButton, Flx, Input, IntroLayout } from '../../components/element';
+import { userLogin } from '../../api/users';
 import { useMutation } from 'react-query';
 
 function Login() {
@@ -16,10 +16,9 @@ function Login() {
     const onChangeInputHandler = (e) => {
         setInput({...input, [e.target.id]: e.target.value})
     };
-
+    
     const mutation = useMutation(userLogin, {
         onSuccess: (response) => {
-            // console.log('mutation',response)
             localStorage.setItem("refresh_token", response.headers['refresh_token']);
             sessionStorage.setItem("access_token", response.headers['access_token']);
             navigate("/BoardList");
@@ -39,7 +38,6 @@ function Login() {
         mutation.mutate(userInfo);
         setInput({userId:'',password:''});
     };
-
     
   return (
     <IntroLayout>

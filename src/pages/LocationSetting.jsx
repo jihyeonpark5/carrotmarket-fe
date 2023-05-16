@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { styled } from 'styled-components';
-import { Layout } from '../components/ui';
+import { Layout } from '../components/element';
 
-const {kakao} = window;
+const { kakao } = window;
 
-function LocationSetting() {   
+function LocationSetting() {
+    // map값 저장해두기   
     const [mapState, setMapState] = useState(null);
     
     useEffect(()=> {
@@ -49,8 +50,10 @@ function LocationSetting() {
                 });
                 // 해당 버튼에만 checked 클래스 추가
                 e.target.classList.add('checked');
-                const mapLevel = parseInt(button.dataset.level, 10);
-                const mapRadius = parseInt(button.dataset.radius, 10);
+
+                const mapLevel = parseInt(button.dataset.level);
+                const mapRadius = parseInt(button.dataset.radius);
+
                 map.setLevel(mapLevel);
                 circle.setRadius(mapRadius);
                 circle.setMap(map);
@@ -69,10 +72,10 @@ function LocationSetting() {
             <p className='mytown'>공릉동</p>
             <Controller>
                 <p>가까운 동네</p>
-                <button type='button' id='m500' className="map-level-button checked" data-level="3" data-radius="200"></button>
-                <button type='button' id='m1000' className="map-level-button" data-level="4" data-radius="400"></button>
+                <button type='button' id='m500' className="map-level-button checked" data-level="3" data-radius="250"></button>
+                <button type='button' id='m1000' className="map-level-button" data-level="4" data-radius="500"></button>
                 <button type='button' id='m1500' className="map-level-button" data-level="5" data-radius="750"></button>
-                <button type='button' id='m2000' className="map-level-button" data-level="6" data-radius="900"></button>
+                <button type='button' id='m2000' className="map-level-button" data-level="6" data-radius="1000"></button>
                 <p>먼 동네</p>
             </Controller>
         </MapController>
@@ -117,15 +120,16 @@ const Controller = styled.section`
         position:absolute;
         top:50%;
         transform:translateY(-50%);
-        width:20px;
-        height:20px;
-        border-radius:15px;
+        width:30px;
+        height:30px;
+        border-radius:18px;
         border:none;
         background-color:#ccc;
+        transition:.4s;
     }
     & button.checked{
-        width:25px;
-        height:25px;
+        width:30px;
+        height:30px;
         background-color:#FF7E36;
     }
     & #m500{

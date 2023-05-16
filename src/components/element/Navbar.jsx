@@ -4,7 +4,7 @@ import Flx from './Flx';
 import { AiOutlineHome, AiFillHome, AiOutlineSearch } from "react-icons/ai";
 import { IoPersonOutline, IoPerson } from "react-icons/io5";
 import { BsChatDots, BsChatDotsFill } from "react-icons/bs";
-import { RiSearchFill, RiSearchLine } from "react-icons/ri";
+import { HiLocationMarker, HiOutlineLocationMarker } from "react-icons/hi";
 import { useLocation, useNavigate } from 'react-router-dom';
 
 function Navbar() {
@@ -21,7 +21,7 @@ function Navbar() {
     <StNavbar>
       <Flx>
         <button type='button' onClick={() => toggleIcon(AiOutlineHome, '/BoardList')}>{location.pathname === '/BoardList'  ? <AiFillHome /> : <AiOutlineHome />}</button>
-        <button type='button' onClick={() => toggleIcon(AiOutlineSearch, '/Search')}>{location.pathname === '/Search' ? <RiSearchFill /> : <RiSearchLine />}</button>
+        <button type='button' onClick={() => toggleIcon(AiOutlineSearch, '/LocationSetting')}>{location.pathname === '/LocationSetting' ? <HiLocationMarker /> : <HiOutlineLocationMarker />}</button>
         <button type='button' onClick={() => toggleIcon(BsChatDots, '/ChatList')}>{location.pathname === '/ChatList' ?  <BsChatDotsFill /> : <BsChatDots />}</button>
         <button type='button' onClick={() => toggleIcon(IoPersonOutline, '/MyPage')}>{location.pathname === '/MyPage' ? <IoPerson /> : <IoPersonOutline />}</button>
       </Flx>
