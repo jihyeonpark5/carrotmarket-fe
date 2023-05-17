@@ -92,69 +92,14 @@ function ChatDetail() {
               </p>
           </MyMessage>
         </MyChatDiv>
-        <OtherChatDiv>
-          <Image
-            width={'40px'}
-            height={'40px'}
-            borderradius={'50%'}
-            src={userImg}
-            alt={'상대방 프로필 이미지'}
-          />
-          <div>
-            <OtherMessage>
-              <p>
-                오늘 잠깐 산책을 했는데요 그런데요 걸었는데요 긴 메세지 테스트
-              </p>
-              <span>
-                오후 18:03
-              </span>
-            </OtherMessage>
-            <OtherMessage>
-              <p>
-                한시간 반정도 잠깐 했는데도
-              </p>
-              <span>
-              오후 18:03
-              </span>
-            </OtherMessage>
-            <OtherMessage>
-              <p>
-                얼굴이 살짝 탄 것 같아요
-              </p>
-              <span>
-                오후 18:04
-              </span>
-            </OtherMessage>
-          </div>
-        </OtherChatDiv>
-        <MyChatDiv>
-          <MyMessage>
-              <span>
-                오후 18:05
-              </span>
-              <p>
-                저런 안타까운 소식이에요 그렇군요 걸었어요? 긴 메세지 테스트
-              </p>
-            </MyMessage>
-          <MyMessage>
-              <span>
-                오후 18:06
-              </span>
-              <p>
-                러쉬는 향이 좋아 기분도 좋음 야호
-              </p>
-          </MyMessage>
-        </MyChatDiv>
       </ChatSection>
 
-      <ChatInputSection>
-        {/* 컴포넌트의 width 크기 늘리는법? */}
+      <ChatInputForm>
         <Input
           placeholder="메세지 보내기"
-          width="900"
         />
         <RxPaperPlane />
-      </ChatInputSection>
+      </ChatInputForm>
     </Layout>
   )
 }
@@ -245,7 +190,7 @@ const MyMessage = styled.div`
   }
 `
 
-const ChatInputSection = styled.section`
+const ChatInputForm = styled.form`
   width: 420px;
   padding: 10px;
   position: fixed;
@@ -254,6 +199,9 @@ const ChatInputSection = styled.section`
   gap: 10px;
   align-items: center;
   background-color: white;
+  & input {
+    width: 400px;
+  }
   :last-child {
     font-size: 25px;
     color: grey;
