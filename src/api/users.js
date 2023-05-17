@@ -13,6 +13,17 @@ export const userSignup = (userInfo) => {
         // throw error;
     })
 };
+
+// 주소 유효성 확인
+export const getAddressChk = () => {
+    return instance.get('/member/address')
+    .then((response) => {
+        return response;
+    })
+    .catch((error) => {
+        console.log(error.response.data.responseMessage)
+    })
+}
   
 // 로그인
 export const userLogin = (userInfo) => {
@@ -28,8 +39,10 @@ export const userLogin = (userInfo) => {
 
 // 로그아웃
 export const userLogout = () => {
-    return tokenInstance.get('/api/member/logout')
+    return instance.get('/api/member/logout')
     .then((response) => {
+        localStorage.clear();
+        sessionStorage.clear();
         console.log('로그아웃 성공')
         return response;
     })
@@ -39,7 +52,6 @@ export const userLogout = () => {
     })
 };
 
-// access_token 만료 시 새로운 token 발급
 
 
 

@@ -6,18 +6,22 @@ export const instance = axios.create({
     withCredentials: true, 
 });
 
-// 로그인 시 받아서 저장해놓은 token
-export const refreshToken = localStorage.getItem('refresh_token');
-export const accessToken = sessionStorage.getItem('access_token');
-
-// access토큰이 만료되었을 때 refresh토큰을 이용하여 access토큰 재발급 받기
-export const tokenInstance = axios.create({
-    baseURL: process.env.REACT_APP_SERVER_URL,
-    headers:{
-        'Access_Token' : accessToken,
-        // 'Refresh_Token' : refreshToken,
+// request interceptor
+instance.interceptors.request.use(
+    function (config) {
+      const accessToken = sessionStorage.getItem("access_token");
+      const refreshToken = localStorage.getItem("refresh_token");
+  
+      if (accessToken && refreshToken) {
+        config.headers['Access_token'] = `${accessToken}`;
+        config.headers['Refresh_token'] = `${refreshToken}`;
+      }
+      return config;
+    },
+    function (error) {
+      return Promise.reject(error);
     }
-});
+);
 
 const refresh = async (config) => {
     // const expireAt = sessionStorage.getItem('expireAt');

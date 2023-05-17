@@ -5,6 +5,8 @@ import { SlArrowLeft } from "react-icons/sl";
 import {CommonButton, Flx, Input, IntroLayout } from '../../components/element';
 import { userLogin } from '../../api/users';
 import { useMutation } from 'react-query';
+import { tokenState } from '../../recoil/token';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 function Login() {
     const navigate = useNavigate();
@@ -28,7 +30,7 @@ function Login() {
         }
     });
 
-    // 가입하기 버튼 클릭 이벤트핸들러
+    // 로그인 버튼 클릭 이벤트핸들러
     const onSubmitLoginHandler = (e) => {
         e.preventDefault()
         const userInfo = {

@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import { SlArrowLeft } from "react-icons/sl";
 import { Input, CommonButton, Flx, IntroLayout } from '../../components/element';
 import { useMutation } from 'react-query';
-import { userSignup } from '../../api/users';
+import { getAddressChk, userSignup } from '../../api/users';
 
 function SignUp() {
     // 회원가입에서 필요한 Hook연결하기
@@ -43,27 +43,15 @@ function SignUp() {
           }
     };
     // 주소 유효성 확인 핸들러
-    const onAddressChkHandler = () => {
-
-    }
-    //중복체크용 이벤트핸들러
-    const onDoubleCheckHandler = () => {
-        const userInfo = {
-            userId:input.userId,
-            password:input.password,
-            nickname:input.nickname,
-            address:{
-                region1depthName:input.address.region1depthName,
-                region2depthName:input.address.region2depthName,
-                region3depthName:input.address.region3depthName,
-            }
-        };
-        userSignup(userInfo);
+    const onAddressChkHandler = (e) => {
+        e.preventDefault()
+        getAddressChk();
     }
 
     // 가입하기 버튼 클릭 이벤트핸들러
     const onSubmitJoinHandler = (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        e.stopPropagation();
         const userInfo = {
             userId:input.userId,
             password:input.password,
@@ -174,7 +162,7 @@ function SignUp() {
                         placeholder='ex) 공릉동' 
                         onChange={onChangeInputHandler}/>
                 </Flx>
-                <CommonButton size="small" style={{float:"right"}} onClick={() => onAddressChkHandler}>주소 확인</CommonButton>
+                <CommonButton size="small" style={{float:"right"}} onClick={onAddressChkHandler}>주소 확인</CommonButton>
                 
             </div>
             <CommonButton size='large'>가입하기</CommonButton>
