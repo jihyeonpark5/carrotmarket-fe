@@ -2,7 +2,7 @@ import React from 'react'
 import { styled } from 'styled-components';
 import Character from "../../assets/dangeunee_01.png"
 import Character2 from "../../assets/dangeunee_02.png"
-import { Header, Navbar } from './index';
+import { Header, Navbar } from '../element/index';
 
 function Layout({children}) {
   return (

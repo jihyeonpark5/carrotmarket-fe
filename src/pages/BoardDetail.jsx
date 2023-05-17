@@ -2,21 +2,74 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { Layout, Image, CommonButton } from '../components/element';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
-// * 이미지 임시
-import carrot from '../assets/dangeunee_test_img.png';
 import userDefaultImg from '../assets/user_default_image.jpg';
+import { useQuery, QueryClient, useMutation, useQueryClient } from 'react-query';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getBoardDetail, setDeleteBoard } from '../api/boards';
 
 function BoardDetail() {
+  // * 게시글 상세 조회
+  const currentBoardId = useLocation().pathname.slice(13);
+  // const { data } = useQuery('getBoardDetail', () => getBoardDetail(currentBoardId), {
+  //   staleTime: Infinity,
+  // });
+  const { data } = useQuery(['getBoardDetail', currentBoardId], () => getBoardDetail(currentBoardId), {
+    staleTime: Infinity,
+  });
+
+  // * 데이터 캐싱 (수정 중)
+  // const queryClient = new QueryClient();
+  // queryClient.setQueryData('나머지 데이터', data);
+
+  // const queryClient = useQueryClient();
+  // queryClient.setQueryData('getBoardDetail', data);
+
+
+  // * 게시글 수정 버튼 클릭
+  const navigate = useNavigate();
+  const onBoardEdit = () => {
+    navigate(`/BoardWrite`, {
+      state: {
+        boardId: currentBoardId,
+        title: data.title,
+        price: data.price,
+        content: data.content,
+        image: data.image,
+      }
+    })
+  }
+
+  // * 게시글 삭제 버튼 클릭
+  const onBoardDelete = () => {
+    const deleteConfirm = window.confirm('게시글을 삭제하시겠습니까?');
+    if (!deleteConfirm) {
+      alert('게시글 삭제를 취소하였습니다.');
+      return;
+    } else {
+      deleteBoardMutation.mutate(currentBoardId);
+    }
+  }
+
+  // * 게시글 삭제 useMutation
+  const deleteBoardMutation = useMutation(setDeleteBoard, {
+    onSuccess: (response) => {
+      alert('게시글이 삭제되었습니다.');
+      navigate(`/BoardList`);
+    }
+  })
+
   return (
     <Layout>
+    {
+      data && 
       <ContentSection>
         <Image
           width={'440px'}
           height={'440px'}
           borderradius={'5px'}
-          src={carrot}
+          src={data.image}
           alt={'상품 이미지'}
-        />
+          />
         <UserDiv>
           <UserInfoDiv>
             <Image
@@ -27,40 +80,29 @@ function BoardDetail() {
               alt={'유저 프로필 이미지'}
             />
             <div>
-              <DetailH2>유저닉네임</DetailH2>
-              <DetailH3>역삼동</DetailH3>
+              <DetailH2>{data.nickName}</DetailH2>
+              <DetailH3>{data.address}</DetailH3>
             </div>
           </UserInfoDiv>
           {/* 로그인 한 회원 === 글 작성자면 UserEditDiv, 불일치하면 CommonButton 출력 */}
-          <CommonButton size="small">채팅하기</CommonButton>
-          {/* <UserEditDiv>
-            <span>수정하기</span>
-            <span>삭제하기</span>
-          </UserEditDiv> */}
+          {/* <CommonButton size="small">채팅하기</CommonButton> */}
+          <UserEditDiv>
+            <span onClick={onBoardEdit}>수정하기</span>
+            <span onClick={onBoardDelete}>삭제하기</span>
+          </UserEditDiv>
         </UserDiv>
         <DetailDiv>
-          <DetailH1>당근이 인형 팝니다.</DetailH1>
-          <DetailH3>53분전</DetailH3>
+          <DetailH1>{data.title}</DetailH1>
           <DetailContent>
-            역삼역 3번 출구에서 거래 예정입니다. <br/>
-            인형 사이즈가 크니 거래하실 때 이 점 유의해주세요! <br/>
-            역삼역 3번 출구에서 거래 예정입니다. <br/>
-            인형 사이즈가 크니 거래하실 때 이 점 유의해주세요! <br/>
-            역삼역 3번 출구에서 거래 예정입니다. <br/>
-            인형 사이즈가 크니 거래하실 때 이 점 유의해주세요! <br/>
-            역삼역 3번 출구에서 거래 예정입니다. <br/>
-            인형 사이즈가 크니 거래하실 때 이 점 유의해주세요! <br/>
-            역삼역 3번 출구에서 거래 예정입니다. <br/>
-            인형 사이즈가 크니 거래하실 때 이 점 유의해주세요! <br/>
+            {data.content.replace(/<br>/g, '\n')}
           </DetailContent>
         </DetailDiv>
         <DetailNav>
-          {/* like status값에 따라 heart 다르게 보이도록 설정 */}
-          <DetailH1>210,000원</DetailH1>
-          <AiOutlineHeart />
-          {/* <AiFillHeart /> */}
+          <DetailH1>{Number(data.price).toLocaleString()}원</DetailH1>
+          {!data.likeStatue ? <AiOutlineHeart /> : <AiFillHeart />}
         </DetailNav>
       </ContentSection>
+    }
     </Layout>
   )
 }
@@ -91,6 +133,9 @@ const UserEditDiv = styled.div`
   align-items: center;
   font-size: 14px;
   color: grey;
+  & span {
+    cursor: pointer;
+  }
 `
 
 const DetailDiv = styled.div`

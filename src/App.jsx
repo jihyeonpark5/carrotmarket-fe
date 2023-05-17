@@ -10,24 +10,22 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RecoilRoot>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Intro />} />
-            <Route path="/Main" element={<Main />} />
-            <Route path="/Login" element={<Login />} />
-            <Route path="/SignUp" element={<SignUp />} />
-            <Route path="/MyPage" element={<MyPage />} />
-            <Route path="/Search" element={<Search />} />
-            <Route path="/BoardList" element={<BoardList />} />
-            <Route path="/LocationSetting" element={<LocationSetting />} />
-            <Route path="/BoardDetail" element={<BoardDetail />} />
-            <Route path="/BoardWrite" element={<BoardWrite />} />
-            <Route path="/ChatList" element={<ChatList />} />
-            <Route path="/ChatDetail" element={<ChatDetail />} />
-          </Routes>
-        </BrowserRouter>
-      </RecoilRoot>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Intro />} />
+          <Route path="/Main" element={<Main />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/MyPage" element={<MyPage />} />
+          <Route path="/Search" element={<Search />} />
+          <Route path="/BoardList" element={<BoardList />} />
+          <Route path="/LocationSetting" element={<LocationSetting />} />
+          <Route path="/BoardDetail/:id" element={<BoardDetail />} />
+          <Route path="/BoardWrite" element={<BoardWrite />} />
+          <Route path="/ChatList" element={<ChatList />} />
+          <Route path="/ChatDetail" element={<ChatDetail />} />
+        </Routes>
+      </BrowserRouter>
     </QueryClientProvider>
   )
 }
