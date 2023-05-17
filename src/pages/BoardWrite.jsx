@@ -1,20 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { Layout, Image, CommonButton } from '../components/element';
 import { BsCameraFill } from 'react-icons/bs';
 import { AiFillMinusCircle } from 'react-icons/ai';
 import { useMutation } from 'react-query';
-import { submitBoard } from '../api/boards';
+import { submitBoard, setEditBoard } from '../api/boards';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // TODO 2023-05-17 로그인 pull 받고 업로드 다시 확인해볼 것
 
-// ! 글 작성하기, 수정하기 모두 해당 페이지에서 진행
 function BoardWrite() {
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
   const [content, setContent] = useState('');
   const [preview, setPreview] = useState('');
   const [file, setFile] = useState('');
+
+  // * 게시글 수정으로 넘어왔을 경우
+  const location = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if(location.state !== null) {
+      setTitle(location.state.title);
+      setPrice(location.state.price);
+      setContent(location.state.content);
+      setPreview(location.state.image);
+    }
+  }, [])
 
   // * 썸네일 업로드
   const onFileChange = (e) => {
@@ -84,6 +96,32 @@ function BoardWrite() {
     }
   })
 
+  // * 게시글 수정 버튼 클릭
+  const onEditClick = (e) => {
+    e.preventDefault();
+    if (title === '' || price === '' || content === '' || file === '') {
+      alert('모든 내용을 입력해주세요.');
+      return;
+    }
+
+    const boardEditData = {
+      boardId: location.state.boardId, 
+      title,
+      content: content.replaceAll(/\n/g, '<br>'),
+      price: price.replaceAll(',', ''),
+    }
+
+    editBoardMutation.mutate(boardEditData);
+  }
+
+  // * 게시글 수정 useMutation
+  const editBoardMutation = useMutation(setEditBoard, {
+    onSuccess: (response) => {
+      alert('게시글 수정이 완료되었습니다.');
+      navigate(`/BoardDetail/${location.state.boardId}`);
+    }
+  })
+
   return (
     <Layout>
       {/* 뒤로가기 버튼 클릭 && URL이 글 작성일 경우 뒤로 갈건지 확인 alert */}
@@ -106,9 +144,12 @@ function BoardWrite() {
                   src={preview}
                   alt={'썸네일 이미지'}
                 />
-                <StyledMinusCircle
-                  onClick={onFileDelete}
-                />
+                {
+                  !location.state &&
+                  <StyledMinusCircle
+                    onClick={onFileDelete}
+                  />
+                }
               </>
             }
         </SetImgDiv>
@@ -144,12 +185,11 @@ function BoardWrite() {
             />
           </SetInfo>
         </SetBoardDiv>
-        {/* 수정하기 클릭해 진입했을 경우 글 수정하기로 출력 */}
         <CommonButton
           size={'large'}
-          onClick={onSubmitClick}
+          onClick={!location.state ? onSubmitClick : onEditClick}
         >
-          글 작성하기
+          {!location.state ? '글 작성하기' : '글 수정하기'}
         </CommonButton>
       </ContentForm>
     </Layout>
