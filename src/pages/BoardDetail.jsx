@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { Layout, Image, CommonButton } from '../components/element';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
@@ -12,14 +12,16 @@ function BoardDetail() {
   const [currentLike, setCurrentLike] = useState(null)
 
   // * 게시글 상세 조회
-  const { data } = useQuery(['getBoardDetail', currentBoardId], () => getBoardDetail(currentBoardId), {
+  const { data, refetch } = useQuery(['getBoardDetail', currentBoardId], () => getBoardDetail(currentBoardId), {
     staleTime: Infinity,
     onSuccess: (data) => {
-      if (data && data.likeStatus !== null) {
-        setCurrentLike(data.likeStatus);
-      }
+      setCurrentLike(data.likeStatus);
     },
   });
+
+  useEffect(() => {
+    refetch();
+  }, [])
 
   // * 게시글 수정 버튼 클릭
   const navigate = useNavigate();
