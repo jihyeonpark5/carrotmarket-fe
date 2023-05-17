@@ -1,6 +1,6 @@
 import CommonButton from './Button'
 import StatusButton from './StatusButton'
-import Layout from './Layout'
+import Layout from '../layout/Layout'
 import IntroLayout from '../layout/IntroLayout'
 import Input from './Input'
 import Header from './Header'

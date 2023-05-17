@@ -7,8 +7,6 @@ import { useMutation } from 'react-query';
 import { submitBoard, setEditBoard } from '../api/boards';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-// TODO 2023-05-17 로그인 pull 받고 업로드 다시 확인해볼 것
-
 function BoardWrite() {
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
@@ -92,14 +90,15 @@ function BoardWrite() {
   // * 게시글 작성 useMutation
   const submitBoardMutaion = useMutation(submitBoard, {
     onSuccess: (response) => {
-      // console.log('onSuccess', response);
+      alert('게시글 작성이 완료되었습니다.');
+      navigate(`/BoardDetail/${response.data.id}`);
     }
   })
 
   // * 게시글 수정 버튼 클릭
   const onEditClick = (e) => {
     e.preventDefault();
-    if (title === '' || price === '' || content === '' || file === '') {
+    if (title === '' || price === '' || content === '') {
       alert('모든 내용을 입력해주세요.');
       return;
     }
@@ -132,7 +131,7 @@ function BoardWrite() {
         <SetImgDiv>
             <label>
               <BsCameraFill />
-              <input type="file" name="image" onChange={onFileChange} />
+              {!location.state && <input type="file" name="image" onChange={onFileChange} />}
             </label>
             {
               preview !== '' &&
