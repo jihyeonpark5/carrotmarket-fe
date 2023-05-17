@@ -5,11 +5,10 @@ import { SlArrowLeft } from "react-icons/sl";
 import {CommonButton, Flx, Input, IntroLayout } from '../../components/element';
 import { userLogin } from '../../api/users';
 import { useMutation } from 'react-query';
-import { tokenState } from '../../recoil/token';
-import { useRecoilState, useSetRecoilState } from 'recoil';
 
 function Login() {
     const navigate = useNavigate();
+
     const [input, setInput] = useState({
         userId:'',
         password:''
@@ -18,7 +17,7 @@ function Login() {
     const onChangeInputHandler = (e) => {
         setInput({...input, [e.target.id]: e.target.value})
     };
-    
+
     const mutation = useMutation(userLogin, {
         onSuccess: (response) => {
             localStorage.setItem("refresh_token", response.headers['access_token']);
@@ -30,6 +29,7 @@ function Login() {
             sessionStorage.setItem("userAddress3depth", response.data.data.address.region3depthName);
             sessionStorage.setItem("userAddressX", response.data.data.address.x);
             sessionStorage.setItem("userAddressY", response.data.data.address.y);
+            
             navigate("/BoardList");
         },
         onError: (error) => {

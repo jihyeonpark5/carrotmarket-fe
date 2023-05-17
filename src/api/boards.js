@@ -70,7 +70,7 @@ export const setLikeStatus = (currentBoardId) => {
 }
 
 // * 내 게시글 조회
-export const getMyBoard = ( access_token ) => {
+export const getMyBoard = () => {
     return instance.get('/api/myBoard')
     .then((response) => {
         // console.log(response)
@@ -82,7 +82,7 @@ export const getMyBoard = ( access_token ) => {
 };
 
 // 마이페이지 : 찜목록 조회
-export const getMylikeBoard = ( access_token ) => {
+export const getMylikeBoard = () => {
     return instance.get('/api/like')
     .then((response) => {
         // console.log(response);

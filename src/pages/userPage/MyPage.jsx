@@ -8,8 +8,6 @@ import { CommonButton, Layout } from '../../components/element';
 import Loading from '../statusPage/Loading';
 import Error from '../statusPage/Error';
 import NullAlert from '../statusPage/NullAlert';
-import { useRecoilValue } from 'recoil';
-import { tokenState } from '../../recoil/token';
 
 function MyPage() {
     const navigate = useNavigate();
@@ -61,7 +59,6 @@ function MyPage() {
 
     // 게시물 불러오기
     const access_token = sessionStorage.getItem('access_token');
-    // const access_token = useRecoilValue(tokenState);
 
     const { isLoading: isLoadingMyLikeBoard, isError: isErrorMyLikeBoard, data: dataMyLikeBoard } = useQuery("getMylikeBoard", () => getMylikeBoard(access_token));
     const { isLoading: isLoadingMyBoard, isError: isErrorMyBoard, data: dataMyBoard } = useQuery("getMyBoard", () => getMyBoard(access_token));
