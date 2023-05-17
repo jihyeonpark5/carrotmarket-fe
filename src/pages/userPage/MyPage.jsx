@@ -1,8 +1,8 @@
 import React from 'react'
-import { useQuery } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { Link, useNavigate } from 'react-router-dom';
 import { createGlobalStyle, styled } from 'styled-components';
-import { deleteBoard, getBoard, getDetailBoard, getMyBoard, getMylikeBoard, putBoardSoldout } from '../../api/boards';
+import { deleteBoard, getDetailBoard, getMyBoard, getMylikeBoard, putBoardSoldout } from '../../api/boards';
 import { userLogout } from '../../api/users';
 import { CommonButton, Layout } from '../../components/element';
 import Loading from '../statusPage/Loading';
@@ -13,6 +13,29 @@ import { tokenState } from '../../recoil/token';
 
 function MyPage() {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
+    // 상품 상태 변경 시 mutation 발생
+    const soldoutMutation = useMutation(putBoardSoldout,{
+        onSuccess: (response) => {
+            queryClient.invalidateQueries("getMyBoard");
+            console.log(response);
+        },
+        onError: (error) => {
+            console.log(error)
+        }
+    });
+
+    // 상품 삭제 시 mutation
+    const deleteBoardMutation = useMutation(deleteBoard,{
+        onSuccess: (response) => {
+            queryClient.invalidateQueries("getMyBoard");
+            console.log(response);
+        },
+        onError: (error) => {
+            console.log(error)
+        }
+    })
 
     // 탭메뉴 관련 js
     const tabMenuHandler = (e) => {
@@ -43,7 +66,6 @@ function MyPage() {
     const { isLoading: isLoadingMyLikeBoard, isError: isErrorMyLikeBoard, data: dataMyLikeBoard } = useQuery("getMylikeBoard", () => getMylikeBoard(access_token));
     const { isLoading: isLoadingMyBoard, isError: isErrorMyBoard, data: dataMyBoard } = useQuery("getMyBoard", () => getMyBoard(access_token));
     
-    
     if(isLoadingMyBoard) {
         return <Loading />
     }
@@ -59,33 +81,32 @@ function MyPage() {
 
     // 상세페이지 이동
     const goDetail = (boardId, event) => {
+        navigate(`/BoardDetail/${boardId}`);
         event.stopPropagation();
-        getDetailBoard({boardId, access_token})
-        navigate('/BoardDetail')
     };
 
     // 상품 게시글 삭제
-    const BoardDelete = (boardId) => {
-        deleteBoard({boardId, access_token})
-    }
+    const BoardDelete = (event, boardId) => {
+        deleteBoardMutation.mutate(boardId);
+        event.stopPropagation();
+    };
 
     // 상품 거래완료 처리
-    const BoardSoldout = (boardId) => {
-        putBoardSoldout({boardId, access_token})
-    }
+    const BoardSoldout = (event, boardId) => {
+        soldoutMutation.mutate(boardId);
+        event.stopPropagation();
+    };
 
     // 로그아웃
     const Logout = () => {
         userLogout();
         navigate('/')
     };
-    console.log('dataMyLikeBoard',dataMyLikeBoard)
-    console.log('dataMyBoard',dataMyBoard)
   return (
     
     <Layout>
         {/* {dataMyBoard.nickname} */}
-        <h1>님의 정보</h1>
+        <h1>{sessionStorage.getItem('usernickname')}님의 정보</h1>
         <CommonButton size="small" onClick={() => navigate('/newPost')} style={{marginRight:'13px'}}>글쓰기</CommonButton>
         {/* <CommonButton size="small" onClick={() => navigate('/editNickname')} style={{marginRight:'13px'}}>닉네임 변경</CommonButton> */}
         <CommonButton size="small" onClick={Logout}>로그아웃</CommonButton>
@@ -101,47 +122,50 @@ function MyPage() {
                 <TabSlideArea className='tabContents'>
                     <Contents>
                         {/* 판매중 영역 */}
-                        {dataMyBoard.length === 0 ? (
-                            <NullAlert alertMessage='판매중인 상품이 없어요'/>
+                        {dataMyBoard.filter((item) => item.status === false).length === 0 || dataMyBoard.filter((item) => item.status === false) === null ? (
+                        <NullAlert alertMessage='판매중인 상품이 없어요'/>
                         ) : (
-                        dataMyBoard.map((item) => (
-                                <ItemBox key={item.id} onClick={(event) => goDetail(item.id,event)}>
+                        dataMyBoard.filter((item) => item.status === false).map((item) => (
+                            <ItemBox key={item.id} onClick={(event) => goDetail(item.id, event)}>
+                                <Link to={`/BoardDetail/${item.id}`} key={item.id}>
                                     <ItemArea>
                                         <ImgBox>
-                                            <img src={item.image} alt={item.title} />
+                                        <img src={item.image} alt={item.title} />
                                         </ImgBox>
                                         <Info>
-                                            <h2>{item.title}</h2>
-                                            <p>{item.address}</p>
-                                            <b>{item.price}</b>
+                                        <h2>{item.title}</h2>
+                                        <p>{item.address}</p>
+                                        <b>{item.price}</b>
                                         </Info>
                                     </ItemArea>
-                                    <ButtonWrap>
-                                        <button onClick={() => BoardDelete(item.id)}>상품삭제</button>
-                                        <button onClick={() => BoardSoldout(item.id)}>거래완료</button>
-                                    </ButtonWrap>
-                                </ItemBox>
-                            ))
+                                </Link>
+                                <ButtonWrap>
+                                    <button onClick={(event) => BoardDelete(event, item.id)}>상품삭제</button>
+                                    <button onClick={(event) => BoardSoldout(event, item.id)}>거래완료</button>
+                                </ButtonWrap>
+                            </ItemBox>
+                        ))
                         )}
+
                     </Contents>
                     <Contents>
                         {/* 거래 완료 영역 */}
-                        {dataMyLikeBoard.length === 0 ? (
-                            <NullAlert alertMessage='거래완료한 상품이 없어요'/>
+                        {dataMyBoard.filter((item) => item.status === true).length === 0 ? (
+                        <NullAlert alertMessage='거래 완료된 상품이 없어요'/>
                         ) : (
-                        dataMyBoard.map((item) => (
-                                <ItemBox key={item.id}>
-                                    <ItemArea>
-                                        <ImgBox>
-                                            <img src={item.image} alt={item.title} />
-                                        </ImgBox>
-                                        <Info>
-                                            <h2>{item.title}</h2>
-                                            <p>{item.address}</p>
-                                            <b>{item.price}</b>
-                                        </Info>
-                                    </ItemArea>
-                                </ItemBox>
+                        dataMyBoard.filter((item) => item.status === true).map((item) => (
+                            <ItemBox key={item.id} onClick={(event) => goDetail(item.id, event)}>
+                            <ItemArea>
+                                <ImgBox>
+                                <img src={item.image} alt={item.title} />
+                                </ImgBox>
+                                <Info>
+                                <h2>{item.title}</h2>
+                                <p>{item.address}</p>
+                                <b>{item.price}</b>
+                                </Info>
+                            </ItemArea>
+                            </ItemBox>
                             ))
                         )}
                     </Contents>

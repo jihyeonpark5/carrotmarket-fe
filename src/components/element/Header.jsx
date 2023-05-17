@@ -10,7 +10,7 @@ function Header({children}) {
     <StHeader>
         <button type='button' onClick={() => navigate(-1)}><SlArrowLeft /></button>
         {children}
-        <Link to='/' title="메인페이지로 이동"><img src={logo} alt='당근마켓로고'/></Link>
+        <Link to='/BoardList' title="메인페이지로 이동"><img src={logo} alt='당근마켓로고'/></Link>
     </StHeader>
   )
 }

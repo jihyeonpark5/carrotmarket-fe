@@ -101,8 +101,8 @@ export const getDetailBoard = ({boardId, access_token}) => {
 export const putBoardSoldout = (boardId) => {
     return instance.put(`/api/board/sell/${boardId}`)
     .then((response) => {
-        // console.log(response);
-        return response.data;
+        console.log('거래완료 요청 실행');
+        return response;
     })
     .catch((error) => {
         console.log(error);
@@ -110,7 +110,7 @@ export const putBoardSoldout = (boardId) => {
 };
 
 // 마이페이지 : 게시글 삭제
-export const deleteBoard = ({boardId, access_token}) => {
+export const deleteBoard = (boardId) => {
     return instance.delete(`/api/board/${boardId}`)
     .then((response) => {
         // console.log(response);
