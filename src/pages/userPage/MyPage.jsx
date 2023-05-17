@@ -58,7 +58,8 @@ function MyPage() {
     }
 
     // 상세페이지 이동
-    const goDetail = (boardId) => {
+    const goDetail = (boardId, event) => {
+        event.stopPropagation();
         getDetailBoard({boardId, access_token})
         navigate('/BoardDetail')
     };
@@ -78,6 +79,7 @@ function MyPage() {
         userLogout();
         navigate('/')
     };
+    console.log('dataMyLikeBoard',dataMyLikeBoard)
     console.log('dataMyBoard',dataMyBoard)
   return (
     
@@ -99,11 +101,11 @@ function MyPage() {
                 <TabSlideArea className='tabContents'>
                     <Contents>
                         {/* 판매중 영역 */}
-                        {dataMyLikeBoard.length === 0 ? (
+                        {dataMyBoard.length === 0 ? (
                             <NullAlert alertMessage='판매중인 상품이 없어요'/>
                         ) : (
                         dataMyBoard.map((item) => (
-                                <ItemBox key={item.id} onClick={() => goDetail(item.id)}>
+                                <ItemBox key={item.id} onClick={(event) => goDetail(item.id,event)}>
                                     <ItemArea>
                                         <ImgBox>
                                             <img src={item.image} alt={item.title} />

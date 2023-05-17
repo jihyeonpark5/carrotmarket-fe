@@ -63,14 +63,14 @@ export const setDeleteBoard = (currentBoardId) => {
 
 // * 내 게시글 조회
 export const getMyBoard = ( access_token ) => {
-  return instance.get('/api/myBoard')
-  .then((response) => {
-    // console.log(response)
-    return response.data;
-  })
-  .catch((error) => {
-    return error;
-  })
+    return instance.get('/api/myBoard')
+    .then((response) => {
+        // console.log(response)
+        return response.data.data;
+    })
+    .catch((error) => {
+        return error;
+    })
 };
 
 // 마이페이지 : 찜목록 조회
@@ -98,8 +98,8 @@ export const getDetailBoard = ({boardId, access_token}) => {
 };
 
 // 마이페이지 : 거래 완료
-export const putBoardSoldout = ({boardId, access_token}) => {
-    return instance.put(`/api/board/sell${boardId}`)
+export const putBoardSoldout = (boardId) => {
+    return instance.put(`/api/board/sell/${boardId}`)
     .then((response) => {
         // console.log(response);
         return response.data;
