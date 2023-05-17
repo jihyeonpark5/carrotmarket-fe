@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import { SlArrowLeft } from "react-icons/sl";
 import { Input, CommonButton, Flx, IntroLayout } from '../../components/element';
 import { useMutation } from 'react-query';
-import { getAddressChk, userSignup } from '../../api/users';
+import { getAddressChk, getIdChk, userSignup } from '../../api/users';
 
 function SignUp() {
     // 회원가입에서 필요한 Hook연결하기
@@ -43,15 +43,20 @@ function SignUp() {
           }
     };
     // 주소 유효성 확인 핸들러
-    const onAddressChkHandler = (e) => {
-        e.preventDefault()
-        getAddressChk();
+    const onAddressChkHandler = (e,region1depthName,region2depthName,region3depthName) => {
+        e.preventDefault();
+        // console.log(region1depthName,region2depthName,region3depthName);
+        getAddressChk(region1depthName,region2depthName,region3depthName);
+    }
+
+    const onIdChkHandler = (e,userId) => {
+        e.preventDefault();
+        getIdChk(userId);
     }
 
     // 가입하기 버튼 클릭 이벤트핸들러
     const onSubmitJoinHandler = (e) => {
         e.preventDefault();
-        e.stopPropagation();
         const userInfo = {
             userId:input.userId,
             password:input.password,
@@ -69,7 +74,7 @@ function SignUp() {
     <IntroLayout>
         <Backbutton type='button' onClick={() => navigate(-1)}><SlArrowLeft /></Backbutton>
         <h1 style={{marginTop:"40px",marginBottom:"0px"}}>회원가입</h1>
-        <StForm onSubmit={onSubmitJoinHandler}>
+        <StForm>
             <div>
                 <Flx>
                     <label htmlFor='nickname'>닉네임</label>
@@ -96,7 +101,7 @@ function SignUp() {
                     id='userId' 
                     placeholder='5~10글자 사이 영문 소문자,숫자' 
                     onChange={onChangeInputHandler}/>
-                    <CommonButton size='small' onClick={() => userSignup}>중복확인</CommonButton>
+                    <CommonButton size='small' onClick={(e) => onIdChkHandler(e,input.userId)}>중복확인</CommonButton>
                     {
                         /^[a-z0-9]{8,15}$/.test(input.userId) ?
                         null
@@ -162,10 +167,10 @@ function SignUp() {
                         placeholder='ex) 공릉동' 
                         onChange={onChangeInputHandler}/>
                 </Flx>
-                <CommonButton size="small" style={{float:"right"}} onClick={onAddressChkHandler}>주소 확인</CommonButton>
+                <CommonButton size="small" style={{float:"right"}} onClick={(e) => onAddressChkHandler(e,input.address.region1depthName,input.address.region2depthName,input.address.region3depthName)}>주소 확인</CommonButton>
                 
             </div>
-            <CommonButton size='large'>가입하기</CommonButton>
+            <CommonButton  onClick={(e) => onSubmitJoinHandler(e)} size='large'>가입하기</CommonButton>
         </StForm>
     </IntroLayout>
   )

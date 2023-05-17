@@ -26,15 +26,11 @@ export const getBoards = (setPage) => {
 }
 
 // * 내 게시글 조회
-export const getBoard = ( access_token ) => {
-    return instance.get('/api/myboard',{
-        headers:{
-            'Access_Token': `${access_token}`
-        }
-    })
+export const getMyBoard = ( access_token ) => {
+    return instance.get('/api/myBoard')
     .then((response) => {
         // console.log(response)
-        return response.data;
+        return response.data.data;
     })
     .catch((error) => {
         return error;
@@ -66,8 +62,8 @@ export const getDetailBoard = ({boardId, access_token}) => {
 };
 
 // 마이페이지 : 거래 완료
-export const putBoardSoldout = ({boardId, access_token}) => {
-    return instance.put(`/api/board/sell${boardId}`)
+export const putBoardSoldout = (boardId) => {
+    return instance.put(`/api/board/sell/${boardId}`)
     .then((response) => {
         // console.log(response);
         return response.data;

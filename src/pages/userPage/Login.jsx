@@ -21,8 +21,15 @@ function Login() {
     
     const mutation = useMutation(userLogin, {
         onSuccess: (response) => {
-            localStorage.setItem("refresh_token", response.headers['refresh_token']);
-            sessionStorage.setItem("access_token", response.headers['access_token']);
+            localStorage.setItem("refresh_token", response.headers['access_token']);
+            sessionStorage.setItem("access_token", response.headers['refresh_token']);
+            sessionStorage.setItem("userId", response.data.data.userId);
+            sessionStorage.setItem("usernickname", response.data.data.nickname);
+            sessionStorage.setItem("userAddress1depth", response.data.data.address.region1depthName);
+            sessionStorage.setItem("userAddress2depth", response.data.data.address.region2depthName);
+            sessionStorage.setItem("userAddress3depth", response.data.data.address.region3depthName);
+            sessionStorage.setItem("userAddressX", response.data.data.address.x);
+            sessionStorage.setItem("userAddressY", response.data.data.address.y);
             navigate("/BoardList");
         },
         onError: (error) => {
