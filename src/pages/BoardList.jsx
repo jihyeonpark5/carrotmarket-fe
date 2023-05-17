@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
-import { Layout, Image, StatusButton } from '../components/ui';
+import { Layout, Image, StatusButton } from '../components/element';
 import { SlArrowDown } from 'react-icons/sl';
 import { useMutation } from 'react-query';
 import { Link } from 'react-router-dom';

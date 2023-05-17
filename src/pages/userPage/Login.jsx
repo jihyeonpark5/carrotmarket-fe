@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { SlArrowLeft } from "react-icons/sl";
-import {CommonButton, Flx, Input, IntroLayout } from '../components/ui';
-import { userLogin } from '../api/users';
+import {CommonButton, Flx, Input, IntroLayout } from '../../components/element';
+import { userLogin } from '../../api/users';
 import { useMutation } from 'react-query';
+import { tokenState } from '../../recoil/token';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 function Login() {
     const navigate = useNavigate();
@@ -16,10 +18,9 @@ function Login() {
     const onChangeInputHandler = (e) => {
         setInput({...input, [e.target.id]: e.target.value})
     };
-
+    
     const mutation = useMutation(userLogin, {
         onSuccess: (response) => {
-            // console.log('mutation',response)
             localStorage.setItem("refresh_token", response.headers['refresh_token']);
             sessionStorage.setItem("access_token", response.headers['access_token']);
             navigate("/BoardList");
@@ -29,7 +30,7 @@ function Login() {
         }
     });
 
-    // 가입하기 버튼 클릭 이벤트핸들러
+    // 로그인 버튼 클릭 이벤트핸들러
     const onSubmitLoginHandler = (e) => {
         e.preventDefault()
         const userInfo = {
@@ -39,7 +40,6 @@ function Login() {
         mutation.mutate(userInfo);
         setInput({userId:'',password:''});
     };
-
     
   return (
     <IntroLayout>

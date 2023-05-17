@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import { Layout, Image, CommonButton } from '../components/ui';
+import { Layout, Image, CommonButton } from '../components/element';
 import { BsCameraFill } from 'react-icons/bs';
 import { AiFillMinusCircle } from 'react-icons/ai';
 import { useMutation } from 'react-query';
