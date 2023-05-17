@@ -16,7 +16,8 @@ export const submitBoard = (boardFormData) => {
 export const getBoards = (setPage) => {
   return instance.get(`/api/board?page=${setPage.page}&size=${setPage.size}&sort=${setPage.sort[0]}`)
   .then((response) => {
-    return response.data;
+    console.log('axois', response.data.data.responseDtos)
+    return response.data.data.responseDtos;
   })
   .catch((error) => {
     console.error(error.response.data);

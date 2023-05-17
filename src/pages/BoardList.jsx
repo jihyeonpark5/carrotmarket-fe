@@ -7,19 +7,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getBoards } from '../api/boards';
 
 function BoardList() {
-  const [boardData, setBoardData] = useState([]);
+  const [boardData, setBoardData] = useState();
   const navigate = useNavigate();
 
   // * 페이지가 마운트될 때 게시글 리스트를 조회하도록 설정
   useEffect(() => {
     getBoardList();
-  }, []);
+  }, []); 
 
   // * 게시글 리스트 조회
   const getBoardList = () => {
     const setPage = {
       "page": 0,
-      "size": 0,
+      "size": 10,
       "sort": ["createdAt,DESC"],
     }
     getBoardListMutation.mutate(setPage);
@@ -28,7 +28,7 @@ function BoardList() {
   // * 게시글 리스트 조회 useMutation
   const getBoardListMutation = useMutation(getBoards, {
     onSuccess: (response) => {
-      setBoardData(response.data.responseDtos);
+      setBoardData(response);
     }
   })
 
@@ -47,7 +47,7 @@ function BoardList() {
       </ListNav>
       <ListSection>
         {
-          boardData.length !== 0 &&
+          !!boardData &&
           boardData.map((board) => {
             return (
               <ListOneDiv onClick={() => setPageChange(board.id)} key={board.id}>
@@ -64,9 +64,7 @@ function BoardList() {
                     <span>{board.address}</span>
                   </ListDetailH3>
                   <ListPriceH2>
-                    {/* TODO 둘 다 잘 나오는지 확인 */}
-                    {/* {board.status && <StatusButton color={'black'}>거래완료</StatusButton>} */}
-                    {!!board.status ? <StatusButton color={'black'}>거래완료</StatusButton> : ''}
+                    {board.status && <StatusButton color={'black'}>거래완료</StatusButton>}
                     {Number(board.price).toLocaleString()}원
                   </ListPriceH2>
                 </ListInfoDiv>
