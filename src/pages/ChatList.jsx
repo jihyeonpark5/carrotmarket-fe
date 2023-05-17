@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from 'styled-components';
-import { Layout, Image } from '../components/ui';
+import { Layout, Image } from '../components/element';
 import userDefaultImg from '../assets/user_default_image.jpg';
 import exampleImg from '../assets/board_example.jpg';
 

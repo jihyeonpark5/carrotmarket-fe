@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import { Layout, Image, CommonButton } from '../components/ui';
+import { Layout, Image, CommonButton } from '../components/element';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 // * 이미지 임시
 import carrot from '../assets/dangeunee_test_img.png';

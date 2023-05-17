@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from 'styled-components';
-import { CommonButton, Input, Layout } from '../components/ui'
+import { CommonButton, Input, Layout } from '../components/element'
 
 function Search() {
   return (

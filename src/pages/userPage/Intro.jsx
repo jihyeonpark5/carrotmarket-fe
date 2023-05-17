@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import {CommonButton, IntroLayout} from '../components/ui';
-import carrot from '../assets/carrot.webp'
+import {CommonButton, IntroLayout} from '../../components/element';
+import carrot from '../../assets/carrot.webp'
 import { useNavigate } from 'react-router-dom';
 
 function Intro() {
