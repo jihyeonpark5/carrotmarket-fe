@@ -3,11 +3,12 @@ import { styled } from 'styled-components';
 import { Layout, Image, StatusButton } from '../components/element';
 import { SlArrowDown } from 'react-icons/sl';
 import { useMutation } from 'react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getBoards } from '../api/boards';
 
 function BoardList() {
   const [boardData, setBoardData] = useState([]);
+  const navigate = useNavigate();
 
   // * 페이지가 마운트될 때 게시글 리스트를 조회하도록 설정
   useEffect(() => {
@@ -18,7 +19,7 @@ function BoardList() {
   const getBoardList = () => {
     const setPage = {
       "page": 0,
-      "size": 10,
+      "size": 0,
       "sort": ["createdAt,DESC"],
     }
     getBoardListMutation.mutate(setPage);
@@ -31,11 +32,17 @@ function BoardList() {
     }
   })
 
+  // * 상세 페이지로 이동
+  const setPageChange = (boardId) => {
+    navigate(`/BoardDetail/${boardId}`);
+  }
+
   return (
     <Layout>
       <ListNav>
-        {/* TODO 사용자의 동 이름으로 출력해야 함 */}
-        <span>문학동</span>
+        <Link to="/LocationSetting">
+          <span>{sessionStorage.getItem('userAddress3depth')}</span>
+        </Link>
         <SlArrowDown />
       </ListNav>
       <ListSection>
@@ -43,29 +50,27 @@ function BoardList() {
           boardData.length !== 0 &&
           boardData.map((board) => {
             return (
-              <Link to={`/BoardDetail/${board.id}`} key={board.id}>
-                <ListOneDiv>
-                  <Image
-                    width={'130px'}
-                    height={'130px'}
-                    borderradius={'10px'}
-                    src={board.image}
-                    alt={'상품 이미지'}
-                  />
-                  <ListInfoDiv>
-                    <ListTitleH1>{board.title}</ListTitleH1>
-                    <ListDetailH3>
-                      <span>{board.address}</span>
-                    </ListDetailH3>
-                    <ListPriceH2>
-                      {/* TODO 둘 다 잘 나오는지 확인 */}
-                      {/* {board.status && <StatusButton color={'black'}>거래완료</StatusButton>} */}
-                      {!!board.status ? <StatusButton color={'black'}>거래완료</StatusButton> : ''}
-                      {Number(board.price).toLocaleString()}원
-                    </ListPriceH2>
-                  </ListInfoDiv>
-                </ListOneDiv>
-              </Link>
+              <ListOneDiv onClick={() => setPageChange(board.id)} key={board.id}>
+                <Image
+                  width={'130px'}
+                  height={'130px'}
+                  borderradius={'10px'}
+                  src={board.image}
+                  alt={'상품 이미지'}
+                />
+                <ListInfoDiv>
+                  <ListTitleH1>{board.title}</ListTitleH1>
+                  <ListDetailH3>
+                    <span>{board.address}</span>
+                  </ListDetailH3>
+                  <ListPriceH2>
+                    {/* TODO 둘 다 잘 나오는지 확인 */}
+                    {/* {board.status && <StatusButton color={'black'}>거래완료</StatusButton>} */}
+                    {!!board.status ? <StatusButton color={'black'}>거래완료</StatusButton> : ''}
+                    {Number(board.price).toLocaleString()}원
+                  </ListPriceH2>
+                </ListInfoDiv>
+              </ListOneDiv>
             )
           })
         }
@@ -88,6 +93,7 @@ const ListNav = styled.nav`
   gap: 20px;
   border-bottom: 1px solid lightgrey;
   background-color: #FFFFFF;
+  z-index: 1;
   cursor: pointer;
   :first-child {
     font-size: 20px;
@@ -100,7 +106,6 @@ const ListNav = styled.nav`
 
 const ListSection = styled.section`
   display: flex;
-  position: relative;
   padding-top: 60px;
   flex-direction: column;
 `
@@ -144,9 +149,9 @@ const ListDetailH3 = styled.h3`
 const WriteButton = styled.button`
   width: 60px;
   height: 60px;
-  position: absolute;
-  top: 740px;
-  right: 20px;
+  position: fixed;
+  top: 805px;
+  right: 755px;
   border: none;
   border-radius: 50%;
   background-color: #FF7E36;

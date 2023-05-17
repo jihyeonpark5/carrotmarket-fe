@@ -1,29 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { Layout, Image, CommonButton } from '../components/element';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import userDefaultImg from '../assets/user_default_image.jpg';
-import { useQuery, QueryClient, useMutation, useQueryClient } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getBoardDetail, setDeleteBoard } from '../api/boards';
+import { getBoardDetail, setDeleteBoard, setLikeStatus } from '../api/boards';
 
 function BoardDetail() {
-  // * 게시글 상세 조회
   const currentBoardId = useLocation().pathname.slice(13);
-  // const { data } = useQuery('getBoardDetail', () => getBoardDetail(currentBoardId), {
-  //   staleTime: Infinity,
-  // });
+  const [currentLike, setCurrentLike] = useState(null)
+
+  // * 게시글 상세 조회
   const { data } = useQuery(['getBoardDetail', currentBoardId], () => getBoardDetail(currentBoardId), {
     staleTime: Infinity,
+    onSuccess: (data) => {
+      if (data && data.likeStatus !== null) {
+        setCurrentLike(data.likeStatus);
+      }
+    },
   });
-
-  // * 데이터 캐싱 (수정 중)
-  // const queryClient = new QueryClient();
-  // queryClient.setQueryData('나머지 데이터', data);
-
-  // const queryClient = useQueryClient();
-  // queryClient.setQueryData('getBoardDetail', data);
-
 
   // * 게시글 수정 버튼 클릭
   const navigate = useNavigate();
@@ -52,9 +48,32 @@ function BoardDetail() {
 
   // * 게시글 삭제 useMutation
   const deleteBoardMutation = useMutation(setDeleteBoard, {
-    onSuccess: (response) => {
+    onSuccess: () => {
       alert('게시글이 삭제되었습니다.');
       navigate(`/BoardList`);
+    }
+  })
+
+  // * 작성자가 본인인 게시글에서 찜 버튼 클릭
+  const onMyBoardClickLike = () => {
+    alert('본인이 작성한 게시글은 찜할 수 없습니다.');
+  }
+
+  // * 게시글 찜하기 / 찜하기 해제
+  const onBoardClickLike = () => {
+    setLikeStatusMutation.mutate(currentBoardId);
+  }
+
+  // * 게시글 찜하기 useMutation
+  const setLikeStatusMutation = useMutation(setLikeStatus, {
+    onSuccess: (response) => {
+      if (response === '게시판 찜 하기 성공') {
+        alert('해당 게시글을 찜목록에 추가하였습니다.');
+        setCurrentLike(true);
+      } else {
+        alert('해당 게시글을 찜목록에서 제거하였습니다.');
+        setCurrentLike(false);
+      }
     }
   })
 
@@ -84,12 +103,14 @@ function BoardDetail() {
               <DetailH3>{data.address}</DetailH3>
             </div>
           </UserInfoDiv>
-          {/* 로그인 한 회원 === 글 작성자면 UserEditDiv, 불일치하면 CommonButton 출력 */}
-          {/* <CommonButton size="small">채팅하기</CommonButton> */}
-          <UserEditDiv>
-            <span onClick={onBoardEdit}>수정하기</span>
-            <span onClick={onBoardDelete}>삭제하기</span>
-          </UserEditDiv>
+          {
+            sessionStorage.getItem('usernickname') === data.nickName ?
+              <UserEditDiv>
+                <span onClick={onBoardEdit}>수정하기</span>
+                <span onClick={onBoardDelete}>삭제하기</span>
+              </UserEditDiv>
+            : <CommonButton size="small">채팅하기</CommonButton>
+          }
         </UserDiv>
         <DetailDiv>
           <DetailH1>{data.title}</DetailH1>
@@ -97,9 +118,13 @@ function BoardDetail() {
             {data.content.replace(/<br>/g, '\n')}
           </DetailContent>
         </DetailDiv>
+        { sessionStorage.getItem('usernickname') === data.nickName }
         <DetailNav>
           <DetailH1>{Number(data.price).toLocaleString()}원</DetailH1>
-          {!data.likeStatue ? <AiOutlineHeart /> : <AiFillHeart />}
+          {
+            sessionStorage.getItem('usernickname') === data.nickName ? <AiOutlineHeart onClick={onMyBoardClickLike}/>
+            : currentLike ? <AiFillHeart onClick={onBoardClickLike} /> : <AiOutlineHeart onClick={onBoardClickLike} />
+          }
         </DetailNav>
       </ContentSection>
     }
