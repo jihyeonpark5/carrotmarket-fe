@@ -10,13 +10,16 @@ function LocationSetting() {
     
     useEffect(()=> {
         const Container = document.getElementById('map');
+        // const container = containerRef.current; // Container 변수 참조
         // 사용자 회원가입 시 입력한 주소
-        const X = sessionStorage.getItem('userAddressX');
-        const Y = sessionStorage.getItem('userAddressY');
+        const X = parseFloat(sessionStorage.getItem('userAddressX'));
+        const Y = parseFloat(sessionStorage.getItem('userAddressY'));
+
+        console.log(X,Y);
 
         const options = {
             // 기준 좌표 : 회원가입할 때 받아논 주소 좌표 입력하기
-            center: new kakao.maps.LatLng(X, Y),
+            center: new kakao.maps.LatLng(Y, X),
             level:2
         };
         // 지도 생성
@@ -24,15 +27,16 @@ function LocationSetting() {
         setMapState(map);
 
         // 지금 위치 마커 생성
-        var markerPosition  = new kakao.maps.LatLng(X, Y); 
+        var markerPosition  = new kakao.maps.LatLng(Y, X); 
         var marker = new kakao.maps.Marker({
+            map,
             position: markerPosition
         });
         marker.setMap(map);
 
         // 지도 위에 주변 동네 원형 영역 표시하기
         var circle = new kakao.maps.Circle({
-            center : new kakao.maps.LatLng(33.450701, 126.570667),  // 원의 중심좌표 입니다 
+            center : new kakao.maps.LatLng(Y, X),  // 원의 중심좌표 입니다 
             radius: 100, // 미터 단위의 원의 반지름입니다 
             strokeWeight: 1, // 선의 두께입니다 
             strokeColor: '#75B8FA', // 선의 색깔입니다
@@ -64,7 +68,7 @@ function LocationSetting() {
             });
         });
 
-    },[]);
+    },[sessionStorage.getItem('userAddressX'), sessionStorage.getItem('userAddressY')]);
   return (
     <Layout>
         <h1 style={{fontSize:"25px"}}>내 동네 설정</h1>
@@ -73,7 +77,7 @@ function LocationSetting() {
         </MapArea>
         <MapController>
             <h2 >내 동네</h2>
-            <p className='mytown'>공릉동</p>
+            <p className='mytown'>{sessionStorage.getItem("userAddress3depth")}</p>
             <Controller>
                 <p>가까운 동네</p>
                 <button type='button' id='m500' className="map-level-button checked" data-level="3" data-radius="250"></button>

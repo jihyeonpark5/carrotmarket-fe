@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { instance, request, tokenInstance } from './axios';
+import { instance } from './axios';
 
 // 회원가입
 export const userSignup = (userInfo) => {

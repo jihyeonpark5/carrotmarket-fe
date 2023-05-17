@@ -72,10 +72,10 @@ function BoardList() {
             )
           })
         }
-        <WriteButton>
-          <Link to="/BoardWrite">+</Link>
-        </WriteButton>
       </ListSection>
+      <WriteButton>
+        <Link to="/BoardWrite">+</Link>
+      </WriteButton>
     </Layout>
   )
 }
@@ -147,9 +147,9 @@ const ListDetailH3 = styled.h3`
 const WriteButton = styled.button`
   width: 60px;
   height: 60px;
-  position: fixed;
-  top: 805px;
-  right: 755px;
+  position: absolute;
+  bottom: 75px;
+  right: 15px;
   border: none;
   border-radius: 50%;
   background-color: #FF7E36;
