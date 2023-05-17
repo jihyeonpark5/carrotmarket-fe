@@ -10,9 +10,13 @@ function LocationSetting() {
     
     useEffect(()=> {
         const Container = document.getElementById('map');
+        // 사용자 회원가입 시 입력한 주소
+        const X = sessionStorage.getItem('userAddressX');
+        const Y = sessionStorage.getItem('userAddressY');
+
         const options = {
             // 기준 좌표 : 회원가입할 때 받아논 주소 좌표 입력하기
-            center: new kakao.maps.LatLng(33.450701, 126.570667),
+            center: new kakao.maps.LatLng(X, Y),
             level:2
         };
         // 지도 생성
@@ -20,7 +24,7 @@ function LocationSetting() {
         setMapState(map);
 
         // 지금 위치 마커 생성
-        var markerPosition  = new kakao.maps.LatLng(33.450701, 126.570667); 
+        var markerPosition  = new kakao.maps.LatLng(X, Y); 
         var marker = new kakao.maps.Marker({
             position: markerPosition
         });
