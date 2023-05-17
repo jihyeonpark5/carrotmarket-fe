@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import { Layout, Image, CommonButton } from '../components/element';
+import { Layout, Image, StatusButton } from '../components/element';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import userDefaultImg from '../assets/user_default_image.jpg';
 import { useQuery, useMutation } from 'react-query';
@@ -106,12 +106,11 @@ function BoardDetail() {
             </div>
           </UserInfoDiv>
           {
-            sessionStorage.getItem('usernickname') === data.nickName ?
+            sessionStorage.getItem('usernickname') === data.nickName &&
               <UserEditDiv>
                 <span onClick={onBoardEdit}>수정하기</span>
                 <span onClick={onBoardDelete}>삭제하기</span>
               </UserEditDiv>
-            : <CommonButton size="small">채팅하기</CommonButton>
           }
         </UserDiv>
         <DetailDiv>
@@ -122,11 +121,14 @@ function BoardDetail() {
         </DetailDiv>
         { sessionStorage.getItem('usernickname') === data.nickName }
         <DetailNav>
+          {data.status && <StatusButton color={'black'}>거래완료</StatusButton>}
           <DetailH1>{Number(data.price).toLocaleString()}원</DetailH1>
-          {
-            sessionStorage.getItem('usernickname') === data.nickName ? <AiOutlineHeart onClick={onMyBoardClickLike}/>
-            : currentLike ? <AiFillHeart onClick={onBoardClickLike} /> : <AiOutlineHeart onClick={onBoardClickLike} />
-          }
+          <div>
+            {
+              sessionStorage.getItem('usernickname') === data.nickName ? <AiOutlineHeart onClick={onMyBoardClickLike}/>
+              : currentLike ? <AiFillHeart onClick={onBoardClickLike} /> : <AiOutlineHeart onClick={onBoardClickLike} />
+            }
+          </div>
         </DetailNav>
       </ContentSection>
     }
@@ -198,16 +200,11 @@ const DetailNav = styled.nav`
   width: 440px;
   display: flex;
   position: fixed;
-  justify-content: space-between;
   align-items: center;
-  gap: 20px;
   bottom: 60px;
   background-color: #FFFFFF;
   border-top: 1px solid lightgrey;
-  :first-child {
-    padding-left: 5px;
-  }
-  :last-child {
+  & div {
     width: 40px;
     height: 40px;
     padding-right: 5px;
@@ -217,5 +214,8 @@ const DetailNav = styled.nav`
     color: #ED8C26;
     border-left: 2px solid lightgrey;
     cursor: pointer;
+  }
+  & div:last-child {
+    margin-left: auto;
   }
 `
