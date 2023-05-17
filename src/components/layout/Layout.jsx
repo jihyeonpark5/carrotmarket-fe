@@ -60,6 +60,7 @@ const StLayout = styled.div`
     }
 `
 const StContainer = styled.div`
+    position:relative;
     width:480px;
     height:100vh;
     overflow-y:scroll;

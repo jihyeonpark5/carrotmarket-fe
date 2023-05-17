@@ -5,7 +5,6 @@ import { SlArrowLeft } from "react-icons/sl";
 import {CommonButton, Flx, Input, IntroLayout } from '../../components/element';
 import { userLogin } from '../../api/users';
 import { useMutation } from 'react-query';
-import { tokenState } from '../../recoil/token';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 function Login() {
@@ -18,7 +17,11 @@ function Login() {
     const onChangeInputHandler = (e) => {
         setInput({...input, [e.target.id]: e.target.value})
     };
-    
+    // const [userInfo, setUserInfo] = useRecoilState(userInfo);
+    // const [tokenState, setTokenState] = useRecoilState(tokenState);
+
+    // console.log(userInfo);
+
     const mutation = useMutation(userLogin, {
         onSuccess: (response) => {
             localStorage.setItem("refresh_token", response.headers['access_token']);
