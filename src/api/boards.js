@@ -18,6 +18,7 @@ export const getBoards = (setPage) => {
   return instance.get(`/api/board?page=${setPage.page}&size=${setPage.size}&sort=${setPage.sort[0]}`)
   .then((response) => {
     console.log('axios 게시글 리스트 조회 성공!');
+    console.log(response.data)
     return response.data;
   })
   .catch((error) => {
@@ -30,7 +31,7 @@ export const getBoardDetail = (currentBoardId) => {
   return instance.get(`/api/board/${currentBoardId}`)
   .then((response) => {
     console.log('axios 게시글 상세 조회 성공!');
-    return response.data;
+    return response.data.data;
   })
   .catch((error) => {
     console.error(error.response.data);
@@ -39,7 +40,8 @@ export const getBoardDetail = (currentBoardId) => {
 
 // * 게시글 수정
 export const setEditBoard = (boardEditData) => {
-  return instance.put(`/api/board/${boardEditData.boardId}`)
+  const { boardId, ...editData } = boardEditData;
+  return instance.put(`/api/board/${boardId}`, editData)
   .then((response) => {
     console.log('axios 게시글 수정 성공!');
     return response.data;
@@ -51,7 +53,7 @@ export const setEditBoard = (boardEditData) => {
 
 // * 게시글 삭제
 export const setDeleteBoard = (currentBoardId) => {
-  return instance.put(`/api/board/${currentBoardId}`)
+  return instance.delete(`/api/board/${currentBoardId}`)
   // TODO 실패 시 http status 코드에 따라 다른 alert msg 띄우기
   .then((response) => {
     console.log('axios 게시글 삭제 성공!');
@@ -60,19 +62,15 @@ export const setDeleteBoard = (currentBoardId) => {
 }
 
 // * 내 게시글 조회
-export const getBoard = ( access_token ) => {
-    return instance.get('/api/myboard',{
-        headers:{
-            'Access_Token': `${access_token}`
-        }
-    })
-    .then((response) => {
-        // console.log(response)
-        return response.data;
-    })
-    .catch((error) => {
-        return error;
-    })
+export const getMyBoard = ( access_token ) => {
+  return instance.get('/api/myBoard')
+  .then((response) => {
+    // console.log(response)
+    return response.data;
+  })
+  .catch((error) => {
+    return error;
+  })
 };
 
 // 마이페이지 : 찜목록 조회

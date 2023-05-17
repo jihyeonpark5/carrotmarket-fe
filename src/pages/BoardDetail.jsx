@@ -2,21 +2,28 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { Layout, Image, CommonButton } from '../components/element';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
-// * 이미지 임시
-import carrot from '../assets/dangeunee_test_img.png';
 import userDefaultImg from '../assets/user_default_image.jpg';
-import { useQuery, QueryClient } from 'react-query';
+import { useQuery, QueryClient, useMutation, useQueryClient } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getBoardDetai, setDeleteBoard } from '../api/boards';
+import { getBoardDetail, setDeleteBoard } from '../api/boards';
 
 function BoardDetail() {
   // * 게시글 상세 조회
   const currentBoardId = useLocation().pathname.slice(13);
-  const { data } = useQuery('getBoardDetail', getBoardDetail(currentBoardId));
-  
-  // * 데이터 캐싱
-  const queryClient = new QueryClient();
-  queryClient.setQueryData('나머지 데이터', data);
+  // const { data } = useQuery('getBoardDetail', () => getBoardDetail(currentBoardId), {
+  //   staleTime: Infinity,
+  // });
+  const { data } = useQuery(['getBoardDetail', currentBoardId], () => getBoardDetail(currentBoardId), {
+    staleTime: Infinity,
+  });
+
+  // * 데이터 캐싱 (수정 중)
+  // const queryClient = new QueryClient();
+  // queryClient.setQueryData('나머지 데이터', data);
+
+  // const queryClient = useQueryClient();
+  // queryClient.setQueryData('getBoardDetail', data);
+
 
   // * 게시글 수정 버튼 클릭
   const navigate = useNavigate();
@@ -45,13 +52,16 @@ function BoardDetail() {
 
   // * 게시글 삭제 useMutation
   const deleteBoardMutation = useMutation(setDeleteBoard, {
-    onSucess: (response) => {
-
+    onSuccess: (response) => {
+      alert('게시글이 삭제되었습니다.');
+      navigate(`/BoardList`);
     }
   })
 
   return (
     <Layout>
+    {
+      data && 
       <ContentSection>
         <Image
           width={'440px'}
@@ -59,7 +69,7 @@ function BoardDetail() {
           borderradius={'5px'}
           src={data.image}
           alt={'상품 이미지'}
-        />
+          />
         <UserDiv>
           <UserInfoDiv>
             <Image
@@ -70,16 +80,16 @@ function BoardDetail() {
               alt={'유저 프로필 이미지'}
             />
             <div>
-              <DetailH2>{data.nickname}</DetailH2>
+              <DetailH2>{data.nickName}</DetailH2>
               <DetailH3>{data.address}</DetailH3>
             </div>
           </UserInfoDiv>
           {/* 로그인 한 회원 === 글 작성자면 UserEditDiv, 불일치하면 CommonButton 출력 */}
-          <CommonButton size="small">채팅하기</CommonButton>
-          {/* <UserEditDiv>
+          {/* <CommonButton size="small">채팅하기</CommonButton> */}
+          <UserEditDiv>
             <span onClick={onBoardEdit}>수정하기</span>
             <span onClick={onBoardDelete}>삭제하기</span>
-          </UserEditDiv> */}
+          </UserEditDiv>
         </UserDiv>
         <DetailDiv>
           <DetailH1>{data.title}</DetailH1>
@@ -92,6 +102,7 @@ function BoardDetail() {
           {!data.likeStatue ? <AiOutlineHeart /> : <AiFillHeart />}
         </DetailNav>
       </ContentSection>
+    }
     </Layout>
   )
 }
@@ -122,6 +133,9 @@ const UserEditDiv = styled.div`
   align-items: center;
   font-size: 14px;
   color: grey;
+  & span {
+    cursor: pointer;
+  }
 `
 
 const DetailDiv = styled.div`
