@@ -19,7 +19,7 @@ function BoardList() {
   const getBoardList = () => {
     const setPage = {
       "page": 0,
-      "size": 10,
+      "size": 100,
       "sort": ["createdAt,DESC"],
     }
     getBoardListMutation.mutate(setPage);
