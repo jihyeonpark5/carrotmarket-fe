@@ -78,16 +78,17 @@ function LocationSetting() {
                 circle.setMap(map);
                 // 지도의 영역 범위 보내기
                 // console.log(button.dataset.size)
-                // mapRangeMutation.mutate(button.dataset.size);
+                setMapRange(button.dataset.size)
+                mapRangeMutation.mutate(button.dataset.size);
             });
         });
 
-    },[sessionStorage.getItem('userAddressX'), sessionStorage.getItem('userAddressY')]);
+    },[mapRange]);
 
-    const mapRangeSet = (size) => {
-        // setMapRange(size);
-        mapRangeMutation.mutate(size);
-    }
+    // const mapRangeSet = (size) => {
+    //     setMapRange(size);
+    //     mapRangeMutation.mutate(size);
+    // }
   return (
     <Layout>
         <h1 style={{fontSize:"25px"}}>내 동네 설정</h1>
@@ -106,7 +107,7 @@ function LocationSetting() {
                     data-level="3" 
                     data-size="0" 
                     data-radius="250"
-                    onClick={() => mapRangeSet(0)}
+                    // onClick={() => mapRangeSet(0)}
                     ></button>
                 <button 
                     type='button' 
@@ -115,7 +116,7 @@ function LocationSetting() {
                     data-level="4"  
                     data-size="1" 
                     data-radius="500"
-                    onClick={() => mapRangeSet(1)}
+                    // onClick={() => mapRangeSet(1)}
                     ></button>
                 <button 
                     type='button' 
@@ -124,7 +125,7 @@ function LocationSetting() {
                     data-level="5"  
                     data-size="2" 
                     data-radius="750"
-                    onClick={() => mapRangeSet(2)}
+                    // onClick={() => mapRangeSet(2)}
                     ></button>
                 <button 
                     type='button' 
@@ -133,7 +134,7 @@ function LocationSetting() {
                     data-level="6"  
                     data-size="3" 
                     data-radius="1000"
-                    onClick={() => mapRangeSet(3)}
+                    // onClick={() => mapRangeSet(3)}
                     ></button>
                 <p>먼 동네</p>
             </Controller>

@@ -100,6 +100,9 @@ const ListNav = styled.nav`
   :last-child {
     margin-top: 5px;
   }
+  @media (max-width: 820px){
+    width:100%;
+  }
 `
 
 const ListSection = styled.section`
@@ -147,9 +150,10 @@ const ListDetailH3 = styled.h3`
 const WriteButton = styled.button`
   width: 60px;
   height: 60px;
-  position: absolute;
+  position: fixed;
   bottom: 75px;
-  right: 15px;
+  right: 50%;
+  transform:translateX(370%);
   border: none;
   border-radius: 50%;
   background-color: #FF7E36;
@@ -159,5 +163,9 @@ const WriteButton = styled.button`
   box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.25);
   &:hover {
     background-color: #ED6C26;
+  }
+  @media (max-width: 820px){
+    right: 25px;
+    transform:initial;
   }
 `

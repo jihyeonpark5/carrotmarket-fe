@@ -118,9 +118,10 @@ function MyPage() {
                 <TabSlideArea className='tabContents'>
                     <Contents>
                         {/* 판매중 영역 */}
-                        {dataMyBoard === undefined || dataMyBoard === null || dataMyBoard.length === 0 ? (
+                        {dataMyBoard === undefined || dataMyBoard === null ? (
                         <NullAlert alertMessage='판매중인 상품이 없어요'/>
-                        ) : (
+                        ) : (dataMyBoard.filter((item) => item.status === false).length === 0 ?
+                        <NullAlert alertMessage='판매중인 상품이 없어요'/> :
                         dataMyBoard.filter((item) => item.status === false).map((item) => (
                             <ItemBox key={item.id} onClick={(event) => goDetail(item.id, event)}>
                                 <Link to={`/BoardDetail/${item.id}`} key={item.id}>
@@ -142,13 +143,13 @@ function MyPage() {
                             </ItemBox>
                         ))
                         )}
-
                     </Contents>
                     <Contents>
                         {/* 거래 완료 영역 */}
-                        {dataMyBoard === undefined || dataMyBoard === null || dataMyBoard.length === 0  ? (
-                        <NullAlert alertMessage='거래 완료된 상품이 없어요'/>
-                        ) : (
+                        {dataMyBoard === undefined || dataMyBoard === null ? (
+                        <NullAlert alertMessage='거래 완료한 상품이 없어요'/>
+                        ) : (dataMyBoard.filter((item) => item.status === true).length === 0 ?
+                        <NullAlert alertMessage='거래 완료한 상품이 없어요'/> :
                         dataMyBoard.filter((item) => item.status === true).map((item) => (
                             <ItemBox key={item.id} onClick={(event) => goDetail(item.id, event)}>
                             <ItemArea>
