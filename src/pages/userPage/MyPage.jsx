@@ -172,7 +172,7 @@ function MyPage() {
                             <NullAlert alertMessage='찜한 상품이 없어요'/>
                         ) : (
                             dataMyLikeBoard.map((item) => (
-                                <ItemBox key={item.id}>
+                                <ItemBox key={item.id} onClick={(event) => goDetail(item.id, event)}>
                                     <ItemArea>
                                         <ImgBox>
                                             <img src={item.image} alt={item.title} />
@@ -244,6 +244,7 @@ const Contents = styled.div`
 `
 const ItemBox = styled.div`
     border-bottom:1px solid #ccc;
+    cursor:pointer;
 `
 const ItemArea = styled.div`
     padding:20px 0;
