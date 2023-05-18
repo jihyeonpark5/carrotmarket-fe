@@ -9,7 +9,7 @@ export const userSignup = (userInfo) => {
         return response;
     })
     .catch((error) => {
-        console.log(error.response.data.responseMessage)
+        alert(error.response.data.responseMessage)
         // throw error;
     })
 };
@@ -58,7 +58,7 @@ export const userLogin = (userInfo) => {
         return response;
     })
     .catch((error) => {
-        console.log(error.response.data.responseMessage)
+        alert(error.response.data.responseMessage)
         // throw error;
     })
 };
@@ -69,11 +69,11 @@ export const userLogout = () => {
     .then((response) => {
         localStorage.clear();
         sessionStorage.clear();
-        console.log('로그아웃 성공')
+        alert('로그아웃 성공')
         return response;
     })
     .catch((error) => {
-        console.log(error)
+        alert(error.response.data.responseMessage)
         // throw error;
     })
 };
