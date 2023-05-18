@@ -13,28 +13,6 @@ function MyPage() {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    // 상품 상태 변경 시 mutation 발생
-    const soldoutMutation = useMutation(putBoardSoldout,{
-        onSuccess: (response) => {
-            queryClient.invalidateQueries("getMyBoard");
-            console.log(response);
-        },
-        onError: (error) => {
-            console.log(error)
-        }
-    });
-
-    // 상품 삭제 시 mutation
-    const deleteBoardMutation = useMutation(deleteBoard,{
-        onSuccess: (response) => {
-            queryClient.invalidateQueries("getMyBoard");
-            console.log(response);
-        },
-        onError: (error) => {
-            console.log(error)
-        }
-    })
-
     // 탭메뉴 관련 js
     const tabMenuHandler = (e) => {
         const targetMenu = e.target;
@@ -60,9 +38,29 @@ function MyPage() {
     // 게시물 불러오기
     const access_token = sessionStorage.getItem('access_token');
 
-    const { isLoading: isLoadingMyLikeBoard, isError: isErrorMyLikeBoard, data: dataMyLikeBoard } = useQuery("getMylikeBoard", () => getMylikeBoard(access_token));
-    const { isLoading: isLoadingMyBoard, isError: isErrorMyBoard, data: dataMyBoard } = useQuery("getMyBoard", () => getMyBoard(access_token));
+    const { isLoading: isLoadingMyBoard, isError: isErrorMyBoard, data: dataMyBoard, refetch: refetchMyLikeBoard } = useQuery("getMyBoard", () => getMyBoard(access_token));
+    const { isLoading: isLoadingMyLikeBoard, isError: isErrorMyLikeBoard, data: dataMyLikeBoard, refetch: refetchMyBoard } = useQuery("getMylikeBoard", () => getMylikeBoard(access_token));
     
+    // 상품 상태 변경 시 mutation 발생
+    const soldoutMutation = useMutation(putBoardSoldout,{
+        onSuccess: (response) => {
+            queryClient.invalidateQueries("getMyBoard");
+            queryClient.invalidateQueries("getMyLikeBoard");
+            alert('상품 거래가 완료되었습니다.')
+            console.log('response',response);
+        }
+    });
+
+    // 상품 삭제 시 mutation
+    const deleteBoardMutation = useMutation(deleteBoard,{
+        onSuccess: (response) => {
+            queryClient.invalidateQueries("getMyBoard");
+            queryClient.invalidateQueries("getMyLikeBoard");
+            alert('상품 삭제가 완료되었습니다.')
+            console.log('response',response);
+        }
+    })
+
     if(isLoadingMyBoard) {
         return <Loading />
     }
@@ -99,12 +97,13 @@ function MyPage() {
         userLogout();
         navigate('/')
     };
+
+    console.log('dataMyBoard',dataMyBoard);
+    console.log('dataMyLikeBoard',dataMyLikeBoard);
   return (
-    
     <Layout>
-        {/* {dataMyBoard.nickname} */}
         <h1>{sessionStorage.getItem('usernickname')}님의 정보</h1>
-        <CommonButton size="small" onClick={() => navigate('/newPost')} style={{marginRight:'13px'}}>글쓰기</CommonButton>
+        <CommonButton size="small" onClick={() => navigate('/BoardWrite')} style={{marginRight:'13px'}}>글쓰기</CommonButton>
         {/* <CommonButton size="small" onClick={() => navigate('/editNickname')} style={{marginRight:'13px'}}>닉네임 변경</CommonButton> */}
         <CommonButton size="small" onClick={Logout}>로그아웃</CommonButton>
  
@@ -119,7 +118,7 @@ function MyPage() {
                 <TabSlideArea className='tabContents'>
                     <Contents>
                         {/* 판매중 영역 */}
-                        {dataMyBoard.filter((item) => item.status === false).length === 0 || dataMyBoard.filter((item) => item.status === false) === null ? (
+                        {dataMyBoard === undefined || dataMyBoard === null || dataMyBoard.length === 0 ? (
                         <NullAlert alertMessage='판매중인 상품이 없어요'/>
                         ) : (
                         dataMyBoard.filter((item) => item.status === false).map((item) => (
@@ -147,7 +146,7 @@ function MyPage() {
                     </Contents>
                     <Contents>
                         {/* 거래 완료 영역 */}
-                        {dataMyBoard.filter((item) => item.status === true).length === 0 ? (
+                        {dataMyBoard === undefined || dataMyBoard === null || dataMyBoard.length === 0  ? (
                         <NullAlert alertMessage='거래 완료된 상품이 없어요'/>
                         ) : (
                         dataMyBoard.filter((item) => item.status === true).map((item) => (
@@ -168,7 +167,7 @@ function MyPage() {
                     </Contents>
                     <Contents>
                         {/* 찜 영역 */}
-                        {dataMyLikeBoard.length === 0 ? (
+                        {dataMyLikeBoard === undefined || dataMyLikeBoard.length === 0 ? (
                             <NullAlert alertMessage='찜한 상품이 없어요'/>
                         ) : (
                             dataMyLikeBoard.map((item) => (

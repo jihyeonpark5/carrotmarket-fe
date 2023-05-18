@@ -5,7 +5,7 @@ import { instance } from './axios';
 export const userSignup = (userInfo) => {
     return instance.post('/api/member/signup', userInfo)
     .then((response) => {
-        console.log('회원가입 성공')
+        alert('회원가입 성공');
         return response;
     })
     .catch((error) => {
@@ -32,12 +32,11 @@ export const getIdChk = (userId) => {
 
 // 주소 유효성 확인
 export const getAddressChk = (region1depthName,region2depthName,region3depthName) => {
-    return instance.get(
-        `api/map/checkAddress?
-        region1depthName=${region1depthName}
-        &region2depthName=${region2depthName}
-        &region3depthName=${region3depthName}
-        `)
+    return instance.post(`api/map/address`,{
+        'region1depthName':region1depthName,
+        'region2depthName':region2depthName,
+        'region3depthName':region3depthName
+    })
     .then((response) => {
         if(response.status === 200){
             alert('유효한 주소입니다.')

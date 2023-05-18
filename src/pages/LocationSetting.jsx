@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { useMutation } from 'react-query';
 import { styled } from 'styled-components';
+import { postMapRange } from '../api/map';
 import { Layout } from '../components/element';
 
 const { kakao } = window;
@@ -7,6 +9,15 @@ const { kakao } = window;
 function LocationSetting() {
     // map값 저장해두기   
     const [mapState, setMapState] = useState(null);
+    const [mapRange, setMapRange] = useState(0);
+
+    const mutate = useMutation();
+
+    const mapRangeMutation = useMutation(postMapRange,{
+        onSuccess: (response) => {
+            console.log(response);
+        }
+    });
     
     useEffect(()=> {
         const Container = document.getElementById('map');
@@ -65,10 +76,18 @@ function LocationSetting() {
                 map.setLevel(mapLevel);
                 circle.setRadius(mapRadius);
                 circle.setMap(map);
+                // 지도의 영역 범위 보내기
+                // console.log(button.dataset.size)
+                // mapRangeMutation.mutate(button.dataset.size);
             });
         });
 
     },[sessionStorage.getItem('userAddressX'), sessionStorage.getItem('userAddressY')]);
+
+    const mapRangeSet = (size) => {
+        // setMapRange(size);
+        mapRangeMutation.mutate(size);
+    }
   return (
     <Layout>
         <h1 style={{fontSize:"25px"}}>내 동네 설정</h1>
@@ -80,10 +99,42 @@ function LocationSetting() {
             <p className='mytown'>{sessionStorage.getItem("userAddress3depth")}</p>
             <Controller>
                 <p>가까운 동네</p>
-                <button type='button' id='m500' className="map-level-button checked" data-level="3" data-radius="250"></button>
-                <button type='button' id='m1000' className="map-level-button" data-level="4" data-radius="500"></button>
-                <button type='button' id='m1500' className="map-level-button" data-level="5" data-radius="750"></button>
-                <button type='button' id='m2000' className="map-level-button" data-level="6" data-radius="1000"></button>
+                <button 
+                    type='button' 
+                    id='m500' 
+                    className="map-level-button checked" 
+                    data-level="3" 
+                    data-size="0" 
+                    data-radius="250"
+                    onClick={() => mapRangeSet(0)}
+                    ></button>
+                <button 
+                    type='button' 
+                    id='m1000' 
+                    className="map-level-button" 
+                    data-level="4"  
+                    data-size="1" 
+                    data-radius="500"
+                    onClick={() => mapRangeSet(1)}
+                    ></button>
+                <button 
+                    type='button' 
+                    id='m1500' 
+                    className="map-level-button" 
+                    data-level="5"  
+                    data-size="2" 
+                    data-radius="750"
+                    onClick={() => mapRangeSet(2)}
+                    ></button>
+                <button 
+                    type='button' 
+                    id='m2000' 
+                    className="map-level-button" 
+                    data-level="6"  
+                    data-size="3" 
+                    data-radius="1000"
+                    onClick={() => mapRangeSet(3)}
+                    ></button>
                 <p>먼 동네</p>
             </Controller>
         </MapController>

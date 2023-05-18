@@ -68,6 +68,7 @@ function SignUp() {
             }
         };
         userSignup(userInfo);
+        navigate('/Login');
     };
 
   return (
@@ -150,7 +151,7 @@ function SignUp() {
                         value={input?.address?.region1depthName} 
                         id="region1depthName"
                         style={{width:"30%",marginBottom:"15px"}} 
-                        placeholder='ex) 서울시' 
+                        placeholder='ex) 서울특별시' 
                         onChange={onChangeInputHandler}/>
                     <Input 
                         type="text" 
@@ -196,7 +197,6 @@ const StForm = styled.form`
     box-sizing:border-box;
     &>div>div{
         position:relative;
-        border:1ps solid #f00;
     }
 
     & label{
@@ -212,6 +212,7 @@ const StForm = styled.form`
         color:#f00;
         margin:3px 0 25px;
         transform:translateX(70px);
+        font-size:0.8rem;
     }
     & input{
         display:inline-block;

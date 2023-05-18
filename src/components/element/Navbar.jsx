@@ -22,7 +22,7 @@ function Navbar() {
       <Flx>
         <button type='button' onClick={() => toggleIcon(AiOutlineHome, '/BoardList')}>{location.pathname === '/BoardList'  ? <AiFillHome /> : <AiOutlineHome />}</button>
         <button type='button' onClick={() => toggleIcon(AiOutlineSearch, '/LocationSetting')}>{location.pathname === '/LocationSetting' ? <HiLocationMarker /> : <HiOutlineLocationMarker />}</button>
-        <button type='button' onClick={() => toggleIcon(BsChatDots, '/ChatList')}>{location.pathname === '/ChatList' ?  <BsChatDotsFill /> : <BsChatDots />}</button>
+        {/* <button type='button' onClick={() => toggleIcon(BsChatDots, '/ChatList')}>{location.pathname === '/ChatList' ?  <BsChatDotsFill /> : <BsChatDots />}</button> */}
         <button type='button' onClick={() => toggleIcon(IoPersonOutline, '/MyPage')}>{location.pathname === '/MyPage' ? <IoPerson /> : <IoPersonOutline />}</button>
       </Flx>
     </StNavbar>
@@ -39,8 +39,12 @@ const StNavbar = styled.div`
     background-color:#fff;
     box-shadow: rgba(0, 0, 0, 0.1)  0 -3px 4px -1px ;
 
+    @media (max-width: 820px){
+        width:100%;
+    }
+
     & button{
-      width:25%;
+      width:33%;
       border:none;
       background-color:transparent;
       font-size:27px;

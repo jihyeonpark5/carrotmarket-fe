@@ -78,7 +78,8 @@ export const getMyBoard = () => {
         return response.data.data;
     })
     .catch((error) => {
-        return error;
+        console.log(error)
+        // return error;
     })
 };
 
