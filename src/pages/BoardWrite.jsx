@@ -115,7 +115,7 @@ function BoardWrite() {
 
   // * 게시글 수정 useMutation
   const editBoardMutation = useMutation(setEditBoard, {
-    onSuccess: (response) => {
+    onSuccess: () => {
       alert('게시글 수정이 완료되었습니다.');
       navigate(`/BoardDetail/${location.state.boardId}`);
     }
@@ -123,7 +123,6 @@ function BoardWrite() {
 
   return (
     <Layout>
-      {/* 뒤로가기 버튼 클릭 && URL이 글 작성일 경우 뒤로 갈건지 확인 alert */}
       <ContentForm
         method="post"
         encType="multipart/form-data"
@@ -180,7 +179,7 @@ function BoardWrite() {
               name="content"
               value={content}
               onChange={onContentChange}
-              placeholder="역삼동에 올릴 게시글 내용을 작성해주세요."
+              placeholder={`${sessionStorage.getItem('userAddress3depth')}에 올릴 게시글 내용을 작성해주세요.`}
             />
           </SetInfo>
         </SetBoardDiv>
