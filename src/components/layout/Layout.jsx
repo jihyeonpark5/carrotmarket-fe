@@ -58,6 +58,11 @@ const StLayout = styled.div`
             display:none;
         }
     }
+    @media (max-width: 820px){
+        &>img{
+            display:none;
+        }
+    }
 `
 const StContainer = styled.div`
     position:relative;
@@ -74,6 +79,11 @@ const StContainer = styled.div`
         background-color:#ccc;
     } 
     &::-webkit-scrollbar-track{} 
+
+    @media (max-width: 820px){
+        width:100%;
+        height:100vh;
+    }
 `
 const Wrap = styled.div`
   width:100%;

@@ -68,6 +68,11 @@ const StContainer = styled.div`
         background-color:#ccc;
     } 
     &::-webkit-scrollbar-track{} 
+
+    @media (max-width: 820px){
+        width:100%;
+        height:100vh;
+    }
 `
 const Wrap = styled.div`
   width:100%;
