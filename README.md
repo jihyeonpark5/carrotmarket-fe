@@ -30,4 +30,6 @@
 <div>
   <h4>📢API 및 Notion</h4>
 https://www.notion.so/8-8db49f11f60340bb9bb0d02bd40cd635
+  <h4>발표 영상</h4>
+  <a href="https://youtu.be/PQy3LleWe1Q" title="당근마켓 발표영상">https://youtu.be/PQy3LleWe1Q</a>
 </div>
