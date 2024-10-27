@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import {CommonButton, IntroLayout} from '../../components/element';
-import carrot from '../../assets/carrot.webp'
+import sprout from '../../assets/sprout.webp'
 import { useNavigate } from 'react-router-dom';
 
 function SignUpChoice() {
@@ -9,7 +9,7 @@ function SignUpChoice() {
   return (
     <IntroLayout>
         <TextWrap>
-          <img src={carrot} alt='소소하게 메인 이미지'/>
+          <img src={sprout} alt='소소하게 메인 이미지'/>
           <h1>가입 유형을</h1>
           <h1>선택해 주세요.</h1>
         </TextWrap>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import {CommonButton, IntroLayout} from '../../components/element';
-import carrot from '../../assets/carrot.webp'
+import sprout from '../../assets/sprout.webp'
 import { useNavigate } from 'react-router-dom';
 
 function Intro() {
@@ -9,7 +9,7 @@ function Intro() {
   return (
     <IntroLayout>
         <TextWrap>
-          <img src={carrot} alt='소소하게 메인 이미지'/>
+          <img src={sprout} alt='소소하게 메인 이미지'/>
           <h1>소소한 행복, 소소하게</h1>
           <p>로스 식품 정보부터 예약까지,<br />지금 내 동네를 선택하고 시작해보세요!</p>
         </TextWrap>

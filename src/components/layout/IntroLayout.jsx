@@ -21,7 +21,7 @@ export default IntroLayout;
 
 const StLayout = styled.div`
     position:relative;
-    background-color:#f9f5f4;
+    background-color:#FFFBF5;
     margin:0;
     &>img.bcharacter{
         position:absolute;
