@@ -9,7 +9,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 function BoardWrite() {
   const [title, setTitle] = useState('');
-  const [price, setPrice] = useState('');
+  const [original_price, setPrice] = useState('');
+  const [discount_rate, setRate] = useState('');
+  const [category, setCategory] = useState(''); // 카테고리 상태 추가
   const [content, setContent] = useState('');
   const [preview, setPreview] = useState('');
   const [file, setFile] = useState('');
@@ -20,9 +22,11 @@ function BoardWrite() {
   useEffect(() => {
     if(location.state !== null) {
       setTitle(location.state.title);
-      setPrice(location.state.price);
+      setPrice(location.state.original_price);
+      setRate(location.state.discount_rate);
       setContent(location.state.content);
       setPreview(location.state.image);
+      setCategory(location.state.category); // 수정시 카테고리 설정
     }
   }, [])
 
@@ -65,6 +69,19 @@ function BoardWrite() {
     }
   }
 
+  // * 할인율 입력값 감지
+  const onRateChange = (e) => {
+    const newRate = e.target.value.replace(/\D/g, '');
+    if (newRate === '') {
+      setRate('');
+    } else {
+      setRate(Number(newRate).toLocaleString());
+    }
+  }
+
+  // * 카테고리 입력값 감지
+
+
   // * 내용 입력값 감지
   const onContentChange = (e) => {
     setContent(e.target.value);
@@ -73,7 +90,7 @@ function BoardWrite() {
   // * 게시글 작성 버튼 클릭
   const onSubmitClick = (e) => {
     e.preventDefault();
-    if (title === '' || price === '' || content === '' || file === '') {
+    if (title === '' || original_price === '' || discount_rate === '' || category === '' || content === '' || file === '') {
       alert('모든 내용을 입력해주세요.');
       return;
     }
@@ -82,7 +99,9 @@ function BoardWrite() {
     boardFormData.append('title', title);
     boardFormData.append('image', file);
     boardFormData.append('content', content.replaceAll(/\n/g, '<br>'));
-    boardFormData.append('price', price.replaceAll(',', ''));
+    boardFormData.append('original_price', original_price.replaceAll(',', ''));
+    boardFormData.append('discount_rate', discount_rate.replaceAll(',', ''));
+    boardFormData.append('image', category);
 
     submitBoardMutaion.mutate(boardFormData);
   }
@@ -98,7 +117,7 @@ function BoardWrite() {
   // * 게시글 수정 버튼 클릭
   const onEditClick = (e) => {
     e.preventDefault();
-    if (title === '' || price === '' || content === '') {
+    if (title === '' || original_price === '' || discount_rate === '' || category === '' || content === '') {
       alert('모든 내용을 입력해주세요.');
       return;
     }
@@ -107,7 +126,9 @@ function BoardWrite() {
       boardId: location.state.boardId, 
       title,
       content: content.replaceAll(/\n/g, '<br>'),
-      price: price.replaceAll(',', ''),
+      original_price: original_price.replaceAll(',', ''),
+      discount_rate: discount_rate.replaceAll(',', ''),
+      category  // 카테고리 추가
     }
 
     editBoardMutation.mutate(boardEditData);
@@ -166,11 +187,39 @@ function BoardWrite() {
             <BoardLabel htmlFor="price">가격</BoardLabel>
             <BoardInput
               type="text"
-              id="price"
-              name="price"
-              value={price}
+              id="original_price"
+              name="original_price"
+              value={original_price}
               onChange={onPriceChange}
             />
+          </SetInfo>
+          <SetInfo style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ flex: 1 }}>
+            <BoardLabel htmlFor="discount_rate">할인율</BoardLabel>
+            <BoardInput
+              type="text"
+              id="discount_rate"
+              name="discount_rate"
+              value={discount_rate}
+              onChange={onRateChange}
+            />
+          </div>
+          </SetInfo>
+          <SetInfo>
+            <BoardLabel htmlFor="category">종류</BoardLabel>
+            <CategorySelect
+              id="category"
+              name="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="">선택하세요</option>
+              <option value="bread">빵</option>
+              <option value="rice_cake">떡</option>
+              <option value="side_dish">반찬</option>
+              <option value="grocery">마트</option>
+              <option value="etc">기타</option>
+            </CategorySelect>
           </SetInfo>
           <BoardLabel htmlFor="content" />
           <SetInfo>
@@ -263,6 +312,17 @@ const SetContent = styled.textarea`
   font-size: 16px;
   border: none;
   resize: none;
+  &:focus {
+    outline: none;
+  }
+`
+
+const CategorySelect = styled.select`
+  width: 365px;
+  height: 30px;
+  font-size: 16px;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
   &:focus {
     outline: none;
   }
