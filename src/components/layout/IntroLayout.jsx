@@ -44,7 +44,7 @@ const StLayout = styled.div`
             right:0px;
         }
         &>img.bcharacter{
-            left:-50px;
+            left:0px;
         }
     }
     @media (max-width: 1130px){
