@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 import { Layout, Image, StatusButton } from '../components/element';
 import { SlArrowDown } from 'react-icons/sl';
 import { useMutation } from 'react-query';
@@ -7,129 +7,240 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getBoards } from '../api/boards';
 
 function BoardList() {
-  const [boardData, setBoardData] = useState();
+  const [boardData, setBoardData] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null); // 선택된 단일 카테고리 상태
+  const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태
   const navigate = useNavigate();
 
-  // * 페이지가 마운트될 때 게시글 리스트를 조회하도록 설정
+  // 페이지가 마운트될 때 게시글 리스트를 조회하도록 설정
   useEffect(() => {
     getBoardList();
   }, []); 
 
-  // * 게시글 리스트 조회
+  // 카테고리 목록 정의
+  const categories = [
+    { id: 1, name: '빵' },
+    { id: 2, name: '떡' },
+    { id: 3, name: '반찬' },
+    { id: 4, name: '마트' },
+    { id: 5, name: '기타' },
+  ];
+
+  // 게시글 리스트 조회
   const getBoardList = () => {
     const setPage = {
-      "page": 0,
-      "size": 100,
-      "sort": ["createdAt,DESC"],
-    }
+      page: 0,
+      size: 100,
+      sort: ["createdAt,DESC"],
+    };
     getBoardListMutation.mutate(setPage);
-  }
+  };
 
-  // * 게시글 리스트 조회 useMutation
+  // 게시글 리스트 조회 useMutation
   const getBoardListMutation = useMutation(getBoards, {
     onSuccess: (response) => {
       setBoardData(response);
-    }
-  })
+    },
+  });
 
-  // * 상세 페이지로 이동
+  // 상세 페이지로 이동
   const setPageChange = (boardId) => {
     navigate(`/BoardDetail/${boardId}`);
-  }
+  };
+
+  // 카테고리 선택 핸들러
+  const handleCategorySelect = (categoryId) => {
+    setSelectedCategory((prevCategory) =>
+      prevCategory === categoryId ? null : categoryId
+    );
+  };
+
+  // 선택된 카테고리에 따라 필터링된 게시글 목록
+  const filteredBoardData = selectedCategory
+  ? boardData.filter((board) => board.categoryId === selectedCategory)
+  : boardData;
+
+  const handleSearch = (event) => {
+    if (event.key === "Enter") {
+      navigate(`/BoardListShop/${searchTerm}`);
+    }
+  };
 
   return (
     <Layout>
-      <ListNav>
-        <Link to="/LocationSetting">
-          <span>{sessionStorage.getItem('userAddress3depth')}</span>
-        </Link>
-        <SlArrowDown />
-      </ListNav>
+      {/* 검색 바 */}
+      <SearchBar>
+        <input 
+          type="text"
+          placeholder="상점명 입력"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={handleSearch} // Enter 키 눌렀을 때 검색
+        />
+      </SearchBar>
+
+      {/* 카테고리 섹션 */}
+      <CategorySection>
+        {categories.map((category) => (
+          <CategoryItem
+            key={category.id}
+            onClick={() => handleCategorySelect(category.id)}
+            isSelected={selectedCategory === category.id}
+          >
+            <CategoryImage>
+              <img src={category.image} alt={category.name} />
+            </CategoryImage>
+            <span>{category.name}</span>
+          </CategoryItem>
+        ))}
+      </CategorySection>
+
+      {/* 게시물 리스트 섹션 */}
       <ListSection>
-        {
-          !!boardData &&
-          boardData.map((board) => {
-            return (
-              <ListOneDiv onClick={() => setPageChange(board.id)} key={board.id}>
-                <Image
-                  width={'130px'}
-                  height={'130px'}
-                  borderradius={'10px'}
-                  src={board.image}
-                  alt={'상품 이미지'}
-                />
-                <ListInfoDiv>
-                  <ListTitleH1>{board.title}</ListTitleH1>
-                  <ListDetailH3>
-                    <span>{board.address}</span>
-                  </ListDetailH3>
-                  <ListPriceH2>
-                    {board.status && <StatusButton color={'black'}>거래완료</StatusButton>}
-                    {Number(board.price).toLocaleString()}원
-                  </ListPriceH2>
-                </ListInfoDiv>
-              </ListOneDiv>
-            )
-          })
-        }
+        {filteredBoardData.map((board) => (
+          <ListOneDiv onClick={() => setPageChange(board.id)} key={board.id}>
+            <Image
+              width="130px"
+              height="130px"
+              borderradius="10px"
+              src={board.image}
+              alt="상품 이미지"
+            />
+            <ListInfoDiv>
+              <ListTitleH1>{board.title}</ListTitleH1>
+              <ListDetailH3>
+                <span>{board.nickname}</span> {/* 상점명(사장님의 닉네임) */}
+              </ListDetailH3>
+              <ListPriceH2>
+                {board.status && <StatusButton color="black">거래완료</StatusButton>}
+                {Number(board.price).toLocaleString()}원
+              </ListPriceH2>
+            </ListInfoDiv>
+          </ListOneDiv>
+        ))}
       </ListSection>
+
+      {/* 글쓰기 버튼 */}
       <WriteButton>
         <Link to="/BoardWrite">+</Link>
       </WriteButton>
     </Layout>
-  )
+  );
 }
 
-export default BoardList
+export default BoardList;
 
-const ListNav = styled.nav`
-  height: 60px;
-  width: 440px;
+// 스타일 정의
+const SearchBar = styled.div`
   display: flex;
-  position: fixed;
   align-items: center;
-  gap: 20px;
-  border-bottom: 1px solid lightgrey;
-  background-color: #FFFFFF;
-  z-index: 1;
+  justify-content: center;
+  margin: 20px auto;
+  padding: 8px;
+  width: 90%;
+  max-width: 500px; /* 검색 바와 카테고리 섹션의 너비를 같게 설정 */
+
+  input {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    &:focus {
+      border-color: #5ca771;
+      box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.2);
+    }
+    &::placeholder {
+      color: #aaa;
+      font-size: 14px;
+    }
+  }
+`;
+
+const CategorySection = styled.div`
+  display: flex;
+  overflow-x: hidden;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  justify-content: space-around;
+  width: 90%;
+  max-width: 500px; /* 검색 바와 동일한 너비로 설정 */
+  margin: 0 auto;
+`;
+
+const CategoryItem = styled.div`
+  flex: 1;
+  max-width: 70px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  :first-child {
-    font-size: 20px;
-    font-weight: bold;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin: 0 5px;
+  background-color: ${({ isSelected }) => (isSelected ? '#14AD6D' : '#fff')}; /* 선택 시 색상 변경 */
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
   }
-  :last-child {
-    margin-top: 5px;
+
+  span {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #333;
   }
-  @media (max-width: 820px){
-    width:100%;
+`;
+
+const CategoryImage = styled.div`
+  width: 45px;
+  height: 45px;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
-`
+`;
 
 const ListSection = styled.section`
   display: flex;
-  padding-top: 60px;
   flex-direction: column;
-`
+  margin-top: 10px;
+`;
 
 const ListOneDiv = styled.div`
   padding: 15px 5px;
   display: flex;
   border-bottom: 1px solid lightgrey;
   cursor: pointer;
-`
+`;
 
 const ListInfoDiv = styled.div`
   margin-left: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-`
+`;
 
 const ListTitleH1 = styled.h1`
   font-size: 18px;
   font-weight: 500;
   margin: 0;
-`
+`;
 
 const ListPriceH2 = styled.h2`
   margin: 0;
@@ -138,14 +249,14 @@ const ListPriceH2 = styled.h2`
     font-weight: 600;
     margin: 0;
   }
-`
+`;
 
 const ListDetailH3 = styled.h3`
   margin: 10px 0 7px 0;
   font-size: 15px;
   font-weight: 300;
   color: grey;
-`
+`;
 
 const WriteButton = styled.button`
   width: 60px;
@@ -153,19 +264,19 @@ const WriteButton = styled.button`
   position: fixed;
   bottom: 75px;
   right: 50%;
-  transform:translateX(370%);
+  transform: translateX(370%);
   border: none;
   border-radius: 50%;
-  background-color: #FF7E36;
+  background-color: #14AD6D;
   color: white;
   font-size: 30px;
   transition: all 0.03s ease-out;
   box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.25);
   &:hover {
-    background-color: #ED6C26;
+    background-color: #029B5D;
   }
-  @media (max-width: 820px){
+  @media (max-width: 820px) {
     right: 25px;
-    transform:initial;
+    transform: initial;
   }
-`
+`;
