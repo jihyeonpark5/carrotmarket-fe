@@ -9,7 +9,7 @@ import Loading from '../statusPage/Loading';
 import Error from '../statusPage/Error';
 import NullAlert from '../statusPage/NullAlert';
 
-function MyPage() {
+function MyPageCustomer() {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
@@ -19,9 +19,11 @@ function MyPage() {
         const allMenus = document.querySelectorAll('.tabMenu');
         const tabNav = document.querySelector('.tabNav');
         const tabContents = document.querySelector('.tabContents');
+        const NavWidth = 147;
+        const SlideWidth = 33;
         const index = Array.from(allMenus).indexOf(targetMenu);
-        const navDistance = index * 100;
-        const contentsDistance = index * 50;
+        const navDistance = index * NavWidth;
+        const contentsDistance = index * SlideWidth;
         
         allMenus.forEach((menu) => {
             menu.classList.remove('checked');
@@ -29,7 +31,7 @@ function MyPage() {
 
         targetMenu.classList.add('checked');
 
-        tabNav.style.transform = `translateX(${navDistance}%)`;
+        tabNav.style.transform = `translateX(${navDistance}px)`;
         tabContents.style.transform = `translateX(-${contentsDistance}%)`;
     };
 
@@ -108,7 +110,8 @@ function MyPage() {
         <TabContainer>
             <TabMenuArea>
                 <TabMenu id="sale" className='tabMenu checked' onClick={tabMenuHandler}>판매중</TabMenu>
-                <TabMenu id="soldout" className='tabMenu' onClick={tabMenuHandler}>예약내역</TabMenu>
+                <TabMenu id="soldout" className='tabMenu' onClick={tabMenuHandler}>거래완료</TabMenu>
+                <TabMenu id="like" className='tabMenu' onClick={tabMenuHandler}>찜</TabMenu>
                 <TabNav className='tabNav'/>
             </TabMenuArea>
             <TabContentsArea>
@@ -142,11 +145,11 @@ function MyPage() {
                         )}
                     </Contents>
                     <Contents>
-                        {/* 예약내역 영역 */}
+                        {/* 거래 완료 영역 */}
                         {dataMyBoard === undefined || dataMyBoard === null ? (
-                        <NullAlert alertMessage='손님이 예약한 상품이 없어요'/>
+                        <NullAlert alertMessage='거래 완료한 상품이 없어요'/>
                         ) : (dataMyBoard.filter((item) => item.status === true).length === 0 ?
-                        <NullAlert alertMessage='손님이 예약한 상품이 없어요'/> :
+                        <NullAlert alertMessage='거래 완료한 상품이 없어요'/> :
                         dataMyBoard.filter((item) => item.status === true).map((item) => (
                             <ItemBox key={item.id} onClick={(event) => goDetail(item.id, event)}>
                             <ItemArea>
@@ -163,6 +166,27 @@ function MyPage() {
                             ))
                         )}
                     </Contents>
+                    <Contents>
+                        {/* 찜 영역 */}
+                        {dataMyLikeBoard === undefined || dataMyLikeBoard.length === 0 ? (
+                            <NullAlert alertMessage='찜한 상품이 없어요'/>
+                        ) : (
+                            dataMyLikeBoard.map((item) => (
+                                <ItemBox key={item.id} onClick={(event) => goDetail(item.id, event)}>
+                                    <ItemArea>
+                                        <ImgBox>
+                                            <img src={item.image} alt={item.title} />
+                                        </ImgBox>
+                                        <Info>
+                                            <h2>{item.title}</h2>
+                                            <p>{item.address}</p>
+                                            <b>{item.price}</b>
+                                        </Info>
+                                    </ItemArea>
+                                </ItemBox>
+                            ))
+                        )}
+                    </Contents>
                 </TabSlideArea>
             </TabContentsArea>
         </TabContainer>
@@ -170,7 +194,7 @@ function MyPage() {
   )
 }
 
-export default MyPage;
+export default MyPageCustomer;
 
 const TabContainer = styled.article`
     width:100%;
@@ -184,7 +208,7 @@ const TabMenuArea = styled.div`
     border-bottom:1px solid #bdbdbd;
 `
 const TabMenu = styled.button`
-    width:50%; /* 탭을 반으로 나누기 위해 50%로 설정 */
+    width:33%;
     background-color:transparent;
     border:none;
     font-size:18px;
@@ -197,7 +221,7 @@ const TabMenu = styled.button`
 const TabNav = styled.div`
     position:absolute;
     bottom:0;
-    width:50%; /* 네비게이션 바도 탭에 맞게 50% */
+    width:145px;
     height:2px;
     background-color:#333;
     transition:.3s;
@@ -207,12 +231,12 @@ const TabContentsArea = styled.div`
     overflow:hidden;
 `
 const TabSlideArea = styled.div`
-    width: 200%; /* 두 탭의 내용만 담으므로 200%로 설정 */
+    width:300%;
     display:flex;
     transition:.3s;
 `
 const Contents = styled.div`
-     width:100%; /* 탭 컨텐츠 영역도 50%로 설정 */
+    width:100%;
     /* background-color:beige; */
     &>div{
         width:100%;

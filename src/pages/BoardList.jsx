@@ -19,11 +19,11 @@ function BoardList() {
 
   // 카테고리 목록 정의
   const categories = [
-    { id: 1, name: '빵' },
-    { id: 2, name: '떡' },
-    { id: 3, name: '반찬' },
-    { id: 4, name: '마트' },
-    { id: 5, name: '기타' },
+    { id: 1, name: '빵', image: '../assets/bread.png' },
+    { id: 2, name: '떡', image: '../assets/bread.png' },
+    { id: 3, name: '반찬', image: '../assets/bread.png' },
+    { id: 4, name: '마트', image: '../assets/bread.png' },
+    { id: 5, name: '기타', image: '../assets/bread.png' },
   ];
 
   // 게시글 리스트 조회
@@ -202,7 +202,7 @@ const CategoryItem = styled.div`
 const CategoryImage = styled.div`
   width: 45px;
   height: 45px;
-  background-color: #f0f0f0;
+  
   border-radius: 50%;
   display: flex;
   align-items: center;

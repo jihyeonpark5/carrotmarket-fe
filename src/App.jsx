@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Main, Login, SignUp, MyPage, Intro, BoardList, Search, BoardDetail, BoardWrite, ChatList, ChatDetail, LocationSetting, SignUpChoice, SignUpCustomer } from './pages/index';
 import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
+import MyPageCustomer from './pages/userPage/MyPageCustomer';
 
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ function App() {
           <Route path="/BoardWrite" element={<BoardWrite />} />
           <Route path="/ChatList" element={<ChatList />} />
           <Route path="/ChatDetail" element={<ChatDetail />} />
+          <Route path="/MyPageCustomer" element={<MyPageCustomer />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
