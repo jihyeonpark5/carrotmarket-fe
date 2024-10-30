@@ -1,7 +1,5 @@
 import React from 'react'
 import { styled } from 'styled-components';
-import Character from "../../assets/image_01.png"
-import Character2 from "../../assets/image_02.png"
 
 function IntroLayout({children}) {
   return (
@@ -11,8 +9,6 @@ function IntroLayout({children}) {
                 {children}
             </Wrap>
         </StContainer>
-        <img src={Character2} alt='식품' className='tcharacter'/>
-        <img src={Character} alt='소비자' className='bcharacter'/>
     </StLayout>
   )
 }
@@ -23,34 +19,11 @@ const StLayout = styled.div`
     position:relative;
     background-color:#FFFBF5;
     margin:0;
-    &>img.bcharacter{
-        position:absolute;
-        bottom:0px;
-        z-index:0;
-        left:50px;
-        width:350px;
-    }
-    &>img.tcharacter{
-        position:absolute;
-        top:0;
-        z-index:0;
-        right:50px;
-        width:300px;
-        transform:rotate(180deg);
-    }
 
     @media (max-width: 1400px){
-        &>img.tcharacter{
-            right:0px;
-        }
-        &>img.bcharacter{
-            left:0px;
-        }
     }
+
     @media (max-width: 1130px){
-        &>img{
-            display:none;
-        }
     }
 `
 
