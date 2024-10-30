@@ -1,7 +1,5 @@
 import React from 'react'
 import { styled } from 'styled-components';
-import Character from "../../assets/image_01.png"
-import Character2 from "../../assets/image_02.png"
 import { Header, Navbar } from '../element/index';
 
 function Layout({children}) {
@@ -14,8 +12,6 @@ function Layout({children}) {
             </Wrap>
             <Navbar />
         </StContainer>
-        <img src={Character2} alt='식품' className='tcharacter'/>
-        <img src={Character} alt='소비자' className='bcharacter'/>
     </StLayout>
   )
 }
@@ -26,42 +22,18 @@ const StLayout = styled.div`
     position:relative;
     background-color:#FFFBF5;
     margin:0;
-    &>img.bcharacter{
-        position:absolute;
-        bottom:0px;
-        z-index:0;
-        left:50px;
-        width:450px;
-    }
-    &>img.tcharacter{
-        position:absolute;
-        top:0;
-        z-index:0;
-        right:50px;
-        width:300px;
-        transform:rotate(180deg);
-    }
+
     ::-webkit-scrollbar {
       display: none;
     }
 
     @media (max-width: 1400px){
-        &>img.tcharacter{
-            right:0px;
-        }
-        &>img.bcharacter{
-            left:-50px;
-        }
     }
+
     @media (max-width: 1130px){
-        &>img{
-            display:none;
-        }
     }
+
     @media (max-width: 820px){
-        &>img{
-            display:none;
-        }
     }
 `
 const StContainer = styled.div`
