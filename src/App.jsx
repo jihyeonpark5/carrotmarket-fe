@@ -1,7 +1,7 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Main, Login, SignUp, MyPage, Intro, BoardList, Search, BoardDetail, BoardWrite, ChatList, ChatDetail, LocationSetting, SignUpChoice, SignUpCustomer } from './pages/index';
+import { Main, Login, SignUp, MyPage, Intro, BoardList, Search, BoardDetail, BoardWrite, LocationSetting, SignUpChoice, SignUpCustomer } from './pages/index';
 import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 
 
@@ -24,8 +24,6 @@ function App() {
           <Route path="/LocationSetting" element={<LocationSetting />} />
           <Route path="/BoardDetail/:id" element={<BoardDetail />} />
           <Route path="/BoardWrite" element={<BoardWrite />} />
-          <Route path="/ChatList" element={<ChatList />} />
-          <Route path="/ChatDetail" element={<ChatDetail />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
